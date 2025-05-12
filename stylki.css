@@ -134,6 +134,7 @@
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin-top: 2rem;
+            color: rgb(0, 0, 0)
         }
         
         .search-box h2 {
@@ -534,7 +535,7 @@
         
         .calculator-result {
             background: #1e3c72;
-            color: white;
+            color: rgb(255, 255, 255);
             padding: 25px;
             border-radius: 10px;
             display: flex;
@@ -558,3 +559,4 @@
                 grid-template-columns: 1fr;
             }
         }
+        
