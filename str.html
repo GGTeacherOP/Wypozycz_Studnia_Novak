@@ -3,492 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoPlus - Wypożyczalnia Samochodów Premium</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            margin-right: 10px;
-            font-size: 2rem;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 1.5rem;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: #4fc3f7;
-        }
-        
-        .hero {
-            background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            color: white;
-            max-width: 600px;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: #4fc3f7;
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        
-        .btn:hover {
-            background: #039be5;
-        }
-        
-        .search-box {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-top: 2rem;
-        }
-        
-        .search-box h2 {
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-        
-        .section {
-            padding: 4rem 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-title h2 {
-            font-size: 2.2rem;
-            color: #1e3c72;
-            margin-bottom: 1rem;
-        }
-        
-        .section-title p {
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .cars-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        
-        .car-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .car-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
-        
-        .car-img {
-            height: 200px;
-            overflow: hidden;
-        }
-        
-        .car-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .car-card:hover .car-img img {
-            transform: scale(1.1);
-        }
-        
-        .car-info {
-            padding: 1.5rem;
-        }
-        
-        .car-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        
-        .car-info p {
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        
-        .car-specs {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-        
-        .car-spec {
-            text-align: center;
-        }
-        
-        .car-spec i {
-            font-size: 1.2rem;
-            color: #4fc3f7;
-            margin-bottom: 0.3rem;
-        }
-        
-        .car-spec span {
-            display: block;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .car-price {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #1e3c72;
-        }
-        
-        .price span {
-            font-size: 1rem;
-            font-weight: normal;
-            color: #666;
-        }
-        
-        .features {
-            background: #f9f9f9;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature-card {
-            text-align: center;
-            padding: 2rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: #4fc3f7;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-card h3 {
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .testimonials {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-        }
-        
-        .testimonials .section-title h2 {
-            color: white;
-        }
-        
-        .testimonials .section-title p {
-            color: rgba(255,255,255,0.8);
-        }
-        
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .testimonial-card {
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1.5rem;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-        }
-        
-        .author-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 1rem;
-        }
-        
-        .author-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .author-info h4 {
-            margin-bottom: 0.2rem;
-        }
-        
-        .author-info p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .contact {
-            background: #f9f9f9;
-        }
-        
-        .contact-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-        }
-        
-        .contact-info h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            color: #1e3c72;
-        }
-        
-        .contact-details {
-            margin-bottom: 2rem;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        
-        .contact-icon {
-            font-size: 1.2rem;
-            color: #4fc3f7;
-            margin-right: 1rem;
-            margin-top: 0.2rem;
-        }
-        
-        .contact-form .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        footer {
-            background: #1a1a1a;
-            color: white;
-            padding: 3rem 0 1rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            color: #4fc3f7;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .footer-column ul li a {
-            color: #bbb;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-column ul li a:hover {
-            color: #4fc3f7;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            color: white;
-            transition: background 0.3s;
-        }
-        
-        .social-links a:hover {
-            background: #4fc3f7;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #bbb;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin-top: 1rem;
-            }
-            
-            nav ul li {
-                margin: 0 0.5rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    <title>ApexiCup - Wypożyczalnia Samochodów Premium</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -497,7 +13,7 @@
             <div class="header-content">
                 <div class="logo">
                     <i class="fas fa-car"></i>
-                    <span>AutoPlus</span>
+                    <span>ApexiCup</span>
                 </div>
                 <nav>
                     <ul>
@@ -733,6 +249,48 @@
             </div>
         </div>
     </section>
+    <section class="section calculator-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Kalkulator wynajmu</h2>
+                <p>Sprawdź orientacyjny koszt przed rezerwacją</p>
+            </div>
+            
+            <div class="calculator-box">
+                <div class="calculator-form">
+                    <div class="form-group">
+                        <label for="calcCarModel">Model auta:</label>
+                        <select id="calcCarModel" class="form-control">
+                            <option value="180">Toyota Corolla - 180 zł/dzień</option>
+                            <option value="250">Audi A4 - 250 zł/dzień</option>
+                            <option value="300">Mercedes CLA - 300 zł/dzień</option>
+                            <option value="350">BMW X5 - 350 zł/dzień</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Długość wynajmu: <span id="calcDaysValue">3</span> dni</label>
+                        <input type="range" id="calcDaysRange" min="1" max="30" value="3" class="slider">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="calcInsurance">Pakiet ubezpieczenia:</label>
+                        <select id="calcInsurance" class="form-control">
+                            <option value="1.0">Podstawowy (w cenie)</option>
+                            <option value="1.2">Rozszerzony (+20%)</option>
+                            <option value="1.5">Pełne pokrycie (+50%)</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="calculator-result">
+                    <div class="result-label">Szacowany koszt:</div>
+                    <div class="result-value" id="calcTotalCost">750 zł</div>
+                    <small>Kwota orientacyjna, finalna cena może różnić się w zależności od dostępności</small>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="section testimonials" id="testimonials">
         <div class="container">
@@ -826,7 +384,7 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div>
-                                <p>kontakt@autoplus.pl</p>
+                                <p>kontakt@ApexiCup.pl</p>
                             </div>
                         </div>
                     </div>
@@ -933,38 +491,12 @@
             </div>
             
             <div class="copyright">
-                <p>&copy; 2023 AutoPlus. Wszelkie prawa zastrzeżone.</p>
+                <p>&copy;  Wszelkie prawa zastrzeżone.</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-        
-        // Sticky header on scroll
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            header.classList.toggle('sticky', window.scrollY > 0);
-        });
-        
-        // Form submission handling
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('Dziękujemy za wiadomość! Skontaktujemy się z Tobą wkrótce.');
-                this.reset();
-            });
-        });
-    </script>
+    <script src='java.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='stylki.css'>
 </body>
 </html>
