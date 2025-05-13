@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyRent - Rezerwacja</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="hero">
+        <nav>
+            <div class="logo">
+                <i class="fas fa-plane"></i>
+                <span>SkyRent</span>
+            </div>
+            <ul>
+                <li><a href="index.html#oferta">Oferta</a></li>
+                <li><a href="index.html#dlaczego-my">Dlaczego my?</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+                <li><a href="admin/adminindex.html" class="admin-login">Panel Admina</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="reservation-section">
+        <h2>Formularz rezerwacji</h2>
+        <div class="reservation-container">
+            <div class="reservation-summary" id="reservation-summary">
+                <!-- Dane samolotu będą ładowane dynamicznie -->
+            </div>
+            <form id="reservation-form">
+                <div class="form-group">
+                    <label for="name">Imię i nazwisko</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Data rezerwacji</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Czas trwania (godziny)</label>
+                    <input type="number" id="duration" name="duration" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Uwagi</label>
+                    <textarea id="notes" name="notes" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn">Potwierdź rezerwację</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-info">
+                <h3>Kontakt</h3>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@skyrent.pl</p>
+                <p><i class="fas fa-map-marker-alt"></i> Lotnisko Okęcie, Warszawa</p>
+            </div>
+            <div class="social-media">
+                <h3>Śledź nas</h3>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 SkyRent. Wszelkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pobierz ID samolotu z URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const planeId = urlParams.get('id');
+            
+            // Dane samolotów (powinny być takie same jak w głównym pliku)
+            const offers = [
+                {
+                    id: 1,
+                    title: "Cessna 172 Skyhawk",
+                    type: "turystyczny",
+                    capacity: "1-4",
+                    range: "1200 km",
+                    speed: "230 km/h",
+                    price: "800 zł/h",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cessna_172S_Skyhawk_SP%2C_Private_JP6817606.jpg"
+                },
+                {
+                    id: 2,
+                    title: "Pilatus PC-12",
+                    type: "biznesowy",
+                    capacity: "5-10",
+                    range: "3300 km",
+                    speed: "500 km/h",
+                    price: "2500 zł/h",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6Njb5roKAH4y2BGZmFlJhJFKhNe_erQUdQR1BJNoD4Ax87ssOttlRuI9U4aXWvtun3LI&usqp=CAU"
+                },
+                {
+                    id: 3,
+                    title: "Beechcraft King Air 350",
+                    type: "biznesowy",
+                    capacity: "5-10",
+                    range: "3000 km",
+                    speed: "550 km/h",
+                    price: "3500 zł/h",
+                    image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT1uXeTNw4sKy61AKGxUNCtO2dSJEVOTCcaZ0x_aWr_18buh8mvJPZ23PA9smcFEWbMPsdl-fENhhc0wmQNCwD80fWzZJ0QSarhng93yw"
+                },
+                {
+                    id: 4,
+                    title: "Embraer Phenom 300",
+                    type: "odrzutowy",
+                    capacity: "5-10",
+                    range: "3600 km",
+                    speed: "840 km/h",
+                    price: "6000 zł/h",
+                    image: "https://static1.simpleflyingimages.com/wordpress/wp-content/uploads/2024/04/artboard-1-the-embraer-phenom-300.png"
+                },
+                {
+                    id: 5,
+                    title: "Cirrus SR22",
+                    type: "turystyczny",
+                    capacity: "1-4",
+                    range: "1900 km",
+                    speed: "340 km/h",
+                    price: "1200 zł/h",
+                    image: "https://images.aircharterservice.com/global/aircraft-guide/private-charter/cirrus-sr22.jpg"
+                },
+                {
+                    id: 6,
+                    title: "Gulfstream G650",
+                    type: "odrzutowy",
+                    capacity: "10+",
+                    range: "13000 km",
+                    speed: "950 km/h",
+                    price: "15000 zł/h",
+                    image: "https://www.aeroflap.com.br/wp-content/uploads/2025/02/gulfstream-g650-001-1024x683.jpg"
+                }
+            ];
+            
+            // Znajdź wybrany samolot
+            const selectedPlane = offers.find(offer => offer.id === parseInt(planeId));
+            
+            // Wyświetl informacje o samolocie
+            if (selectedPlane) {
+                const summaryElement = document.getElementById('reservation-summary');
+                summaryElement.innerHTML = `
+                    <div class="reservation-plane">
+                        <div class="reservation-img">
+                            <img src="${selectedPlane.image}" alt="${selectedPlane.title}">
+                        </div>
+                        <div class="reservation-details">
+                            <h3>${selectedPlane.title}</h3>
+                            <div class="reservation-meta">
+                                <span><i class="fas fa-users"></i> ${selectedPlane.capacity}</span>
+                                <span>${selectedPlane.type}</span>
+                            </div>
+                            <div class="reservation-meta">
+                                <span><i class="fas fa-tachometer-alt"></i> ${selectedPlane.speed}</span>
+                                <span><i class="fas fa-route"></i> ${selectedPlane.range}</span>
+                            </div>
+                            <div class="reservation-price">${selectedPlane.price}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Obsługa formularza
+            const reservationForm = document.getElementById('reservation-form');
+            reservationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Tutaj można dodać logikę wysyłania formularza
+                alert('Rezerwacja została złożona! Skontaktujemy się z Tobą w celu potwierdzenia.');
+                window.location.href = "index.html";
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+    // Pobierz ID samolotu z URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const planeId = urlParams.get('id');
+    
+    if (!planeId) {
+        document.getElementById('reservation-summary').innerHTML = `
+            <div class="error-message">
+                <h3>Błąd: Nie wybrano samolotu</h3>
+                <p>Proszę wrócić do strony głównej i wybrać samolot do rezerwacji.</p>
+                <a href="index.html" class="btn">Powrót do oferty</a>
+            </div>
+        `;
+        return;
+    }
+    
+    // ... (reszta kodu do wyświetlania szczegółów samolotu)
+});
+    </script>
+</body>
+</html>

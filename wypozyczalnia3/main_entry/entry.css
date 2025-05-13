@@ -1,0 +1,92 @@
+.background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('carplane.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(3px) brightness(0.4);
+    z-index: 0;
+}
+
+/* Dodano z-index dla wrappera żeby był nad tłem */
+.wrapper {
+    display: flex;
+    gap: 40px;
+    width: 950px;
+    max-width: 1200px;
+    height: 750px;
+    z-index: 1;
+    position: relative;  /* ← ważne przy z-index */
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* Całość pozostaje wyśrodkowana */
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+}
+
+/* Reszta bez zmian */
+.option {
+    flex: 1;
+    position: relative;
+    border-radius: 30px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.option:hover {
+    transform: scale(1.03);
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.text {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-align: center;
+    padding: 20px;
+}
+
+a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Obrazy */
+.samolot {
+    background-image: url('plane.jpg');
+}
+
+.samochod {
+    background-image: url('car.jpg');
+}
