@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 18, 2025 at 03:56 PM
+-- Generation Time: Maj 20, 2025 at 01:07 AM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -20,6 +20,54 @@ SET time_zone = "+00:00";
 --
 -- Database: `skydriverentals`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Zastąpiona struktura widoku `available_cars`
+-- (See below for the actual view)
+--
+CREATE TABLE `available_cars` (
+`vehicle_id` int(11)
+,`make` varchar(50)
+,`model` varchar(50)
+,`year` int(11)
+,`registration_number` varchar(20)
+,`capacity` int(11)
+,`fuel_type` varchar(30)
+,`engine_power` varchar(30)
+,`daily_rate` decimal(10,2)
+,`image_path` varchar(255)
+,`description` text
+,`city` varchar(50)
+,`address` text
+,`is_airport` tinyint(1)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Zastąpiona struktura widoku `available_planes`
+-- (See below for the actual view)
+--
+CREATE TABLE `available_planes` (
+`vehicle_id` int(11)
+,`make` varchar(50)
+,`model` varchar(50)
+,`year` int(11)
+,`registration_number` varchar(20)
+,`capacity` int(11)
+,`fuel_type` varchar(30)
+,`engine_power` varchar(30)
+,`max_speed` varchar(30)
+,`range` varchar(30)
+,`hourly_rate` decimal(10,2)
+,`image_path` varchar(255)
+,`description` text
+,`city` varchar(50)
+,`address` text
+,`is_airport` tinyint(1)
+);
 
 -- --------------------------------------------------------
 
@@ -119,6 +167,14 @@ CREATE TABLE `reservations` (
   `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_location_id`, `return_location_id`, `pickup_date`, `return_date`, `total_cost`, `status`, `created_at`, `notes`) VALUES
+(1, 3, 2, 3, 4, '2025-05-19 12:00:00', '2025-05-21 12:00:00', 1000.00, 'cancelled', '2025-05-19 22:49:44', NULL),
+(6, 3, 5, 1, 2, '2025-06-19 12:00:00', '2025-06-20 12:00:00', 120000.00, 'confirmed', '2025-05-19 23:45:30', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -155,6 +211,16 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `email`, `password_hash`, `phone`, `address`, `driver_license_number`, `pilot_license_number`, `registration_date`, `last_login`, `is_admin`) VALUES
+(2, 'Jan', 'Bananowicz', 'loczkek2@gmail.com', '$2y$10$TWXpv/sZJG5GQ5L686wuZO9YsSZhzFBeuJvDtpM5ZLSY1WrWPAlwu', '727766999', 'Lotniskowa', '42424', 'ULC1231/25', '2025-05-19 21:16:02', NULL, 0),
+(3, 'Jan', 'Bednarek', 'benarek@gmail.com', '$2y$10$1Jh.yFqrqI/JVEiMjCj5b.sDPMg06.SjelgPgCZzgfCHI0dtnqrn6', '123456789', 'Boisko Piłkarskie 112', 'NIEMAM', 'ULC564', '2025-05-19 21:25:28', NULL, 0),
+(4, 'Pantera', 'Pantera', 'pantera@gmail.com', '$2y$10$Id93ZdhHf1kRmXbWoXv68ekMfX9tadgYwAq4uh6zhbuYV9I/Z.qL2', '72725252', 'panterkowa12 Warszawa', '121241', '', '2025-05-19 22:50:34', NULL, 0),
+(5, 'Admin', 'SkyDrive', 'admin@skydrive.pl', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, NULL, NULL, NULL, '2025-05-19 23:16:45', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -198,12 +264,30 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`vehicle_id`, `type`, `make`, `model`, `year`, `registration_number`, `capacity`, `fuel_type`, `engine_power`, `max_speed`, `range`, `daily_rate`, `hourly_rate`, `available`, `location_id`, `image_path`, `description`) VALUES
-(1, 'car', 'Audi', 'A6', 2022, 'WA12345', 5, 'Benzyna', '250 KM', NULL, NULL, 400.00, NULL, 1, 1, 'car1.jpg', 'Luksusowy sedan z pełnym wyposażeniem'),
-(2, 'car', 'BMW', 'X5', 2021, 'WA67890', 5, 'Diesel', '300 KM', NULL, NULL, 500.00, NULL, 1, 1, 'car2.jpg', 'SUV premium z napędem 4x4'),
-(3, 'car', 'Mercedes-Benz', 'S-Class', 2023, 'KR54321', 4, 'Hybryda', '367 KM', NULL, NULL, 600.00, NULL, 1, 2, 'car3.jpg', 'Flagowy model Mercedesa z najnowszymi technologiami'),
-(4, 'plane', 'Cessna', '172', 2018, 'SP-ABC', 4, 'Avgas', '160 KM', '230 km/h', '1200 km', 0.00, 2000.00, 1, 3, 'plane1.jpg', 'Klasyczny samolot szkolno-turystyczny'),
-(5, 'plane', 'Pilatus', 'PC-12', 2020, 'SP-DEF', 9, 'Jet A-1', '1200 KM', '500 km/h', '3300 km', 0.00, 5000.00, 1, 5, 'plane2.jpg', 'Jednosilnikowy samolot turbośmigłowy biznesowy'),
-(6, 'plane', 'Beechcraft', 'King Air 350', 2019, 'SP-GHI', 11, 'Jet A-1', '2x1050 KM', '560 km/h', '3000 km', 0.00, 8000.00, 1, 5, 'plane3.jpg', 'Dwusilnikowy samolot biznesowy');
+(1, 'car', 'Audi', 'A6', 2022, 'WA12345', 5, 'Benzyna', '250 KM', NULL, NULL, 400.00, NULL, 1, 1, 'https://img.chceauto.pl/audi/a6/audi-a6-kombi-4472-49497_head.webp', 'Luksusowy sedan z pełnym wyposażeniem'),
+(2, 'car', 'BMW', 'X5', 2021, 'WA67890', 5, 'Diesel', '300 KM', NULL, NULL, 500.00, NULL, 1, 1, 'https://bmw-uzywane.com.pl/assets/photo/upload/cars/30706/vehicle_70f26-scale-1200-0.jpg', 'SUV premium z napędem 4x4'),
+(3, 'car', 'Mercedes-Benz', 'S-Class', 2023, 'KR54321', 4, 'Hybryda', '367 KM', NULL, NULL, 600.00, NULL, 1, 2, 'https://www.motortrend.com/uploads/2023/01/2023-Mercedes-Benz-S580-4Matic-13.jpg?w=768&width=768&q=75&format=webp', 'Flagowy model Mercedesa z najnowszymi technologiami'),
+(4, 'plane', 'Cessna', '172', 2018, 'SP-ABC', 4, 'Avgas', '160 KM', '230 km/h', '1200 km', 0.00, 2000.00, 1, 3, 'https://www.flyouts.com/images/thumbnails/product_image-3285-1306x735.jpg', 'Klasyczny samolot szkolno-turystyczny'),
+(5, 'plane', 'Pilatus', 'PC-12', 2020, 'SP-DEF', 9, 'Jet A-1', '1200 KM', '500 km/h', '3300 km', 0.00, 5000.00, 1, 5, 'https://aviationconsumer.com/wp-content/uploads/2019/09/p1a37g676bfgh1imo3skpe1dpn6.jpg', 'Jednosilnikowy samolot turbośmigłowy biznesowy'),
+(6, 'plane', 'Beechcraft', 'King Air 350', 2019, 'SP-GHI', 11, 'Jet A-1', '2x1050 KM', '560 km/h', '3000 km', 0.00, 8000.00, 1, 5, 'https://images.aircharterservice.com/global/aircraft-guide/private-charter/beechcraft-king-air-300-350-1.jpg', 'Dwusilnikowy samolot biznesowy');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura widoku `available_cars`
+--
+DROP TABLE IF EXISTS `available_cars`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `available_cars`  AS SELECT `v`.`vehicle_id` AS `vehicle_id`, `v`.`make` AS `make`, `v`.`model` AS `model`, `v`.`year` AS `year`, `v`.`registration_number` AS `registration_number`, `v`.`capacity` AS `capacity`, `v`.`fuel_type` AS `fuel_type`, `v`.`engine_power` AS `engine_power`, `v`.`daily_rate` AS `daily_rate`, `v`.`image_path` AS `image_path`, `v`.`description` AS `description`, `l`.`city` AS `city`, `l`.`address` AS `address`, `l`.`is_airport` AS `is_airport` FROM (`vehicles` `v` join `locations` `l` on(`v`.`location_id` = `l`.`location_id`)) WHERE `v`.`type` = 'car' AND `v`.`available` = 1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura widoku `available_planes`
+--
+DROP TABLE IF EXISTS `available_planes`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `available_planes`  AS SELECT `v`.`vehicle_id` AS `vehicle_id`, `v`.`make` AS `make`, `v`.`model` AS `model`, `v`.`year` AS `year`, `v`.`registration_number` AS `registration_number`, `v`.`capacity` AS `capacity`, `v`.`fuel_type` AS `fuel_type`, `v`.`engine_power` AS `engine_power`, `v`.`max_speed` AS `max_speed`, `v`.`range` AS `range`, `v`.`hourly_rate` AS `hourly_rate`, `v`.`image_path` AS `image_path`, `v`.`description` AS `description`, `l`.`city` AS `city`, `l`.`address` AS `address`, `l`.`is_airport` AS `is_airport` FROM (`vehicles` `v` join `locations` `l` on(`v`.`location_id` = `l`.`location_id`)) WHERE `v`.`type` = 'plane' AND `v`.`available` = 1 ;
 
 --
 -- Indeksy dla zrzutów tabel
@@ -290,7 +374,7 @@ ALTER TABLE `equipment`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -302,7 +386,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -314,7 +398,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `vehicles`
