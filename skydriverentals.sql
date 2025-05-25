@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 19, 2025 at 08:11 PM
+-- Generation Time: Maj 25, 2025 at 12:34 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -155,7 +155,8 @@ INSERT INTO `reservationequipment` (`reservation_id`, `equipment_id`, `quantity`
 (7, 1, 1),
 (7, 2, 1),
 (7, 4, 1),
-(7, 5, 1);
+(7, 5, 1),
+(8, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -184,7 +185,8 @@ CREATE TABLE `reservations` (
 INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_location_id`, `return_location_id`, `pickup_date`, `return_date`, `total_cost`, `status`, `created_at`, `notes`) VALUES
 (1, 3, 2, 3, 4, '2025-05-19 12:00:00', '2025-05-21 12:00:00', 1000.00, 'cancelled', '2025-05-19 22:49:44', NULL),
 (6, 3, 5, 1, 2, '2025-06-19 12:00:00', '2025-06-20 12:00:00', 120000.00, 'cancelled', '2025-05-19 23:45:30', NULL),
-(7, 4, 6, 1, 1, '2025-05-21 12:00:00', '2025-05-21 12:00:00', 0.00, 'confirmed', '2025-05-20 01:46:52', NULL);
+(7, 4, 6, 1, 1, '2025-05-21 12:00:00', '2025-05-21 12:00:00', 0.00, 'confirmed', '2025-05-20 01:46:52', NULL),
+(8, 4, 3, 3, 2, '2025-05-27 12:00:00', '2025-05-27 18:00:00', 0.00, 'pending', '2025-05-25 00:52:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -398,7 +400,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reviews`
