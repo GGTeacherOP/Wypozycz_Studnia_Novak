@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../admin_functions.php';
+require_once __DIR__ . '/../admin/admin_functions.php';
 checkAdminAuth();
 
 require_once __DIR__ . '/../includes/config.php';
@@ -59,7 +59,7 @@ if(isset($_POST['change_status'])) {
     }
 }
 
-require_once __DIR__ . '/../includes/admin_header.php';
+require_once __DIR__ . '/../admin/includes/admin_header.php';
 ?>
 
 <div class="container-fluid">

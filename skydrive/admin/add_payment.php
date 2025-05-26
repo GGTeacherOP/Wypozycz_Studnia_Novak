@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../admin_functions.php';
+require_once __DIR__ . '/../admin/admin_functions.php';
 checkAdminAuth();
 
 require_once __DIR__ . '/../includes/config.php';
@@ -48,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require_once __DIR__ . '/../includes/admin_header.php';
+require_once __DIR__ . '/../admin/includes/admin_header.php';
 ?>
 
 <div class="container-fluid">
@@ -123,4 +123,4 @@ require_once __DIR__ . '/../includes/admin_header.php';
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../includes/admin_footer.php'; ?>
+<?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>
