@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 26 Maj 2025, 14:56
--- Wersja serwera: 10.4.22-MariaDB
--- Wersja PHP: 7.4.26
+-- Generation Time: Maj 27, 2025 at 01:03 AM
+-- Wersja serwera: 10.4.32-MariaDB
+-- Wersja PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,14 +18,14 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `skydriverentals`
+-- Database: `skydriverentals`
 --
 
 -- --------------------------------------------------------
 
 --
 -- Zastąpiona struktura widoku `available_cars`
--- (Zobacz poniżej rzeczywisty widok)
+-- (See below for the actual view)
 --
 CREATE TABLE `available_cars` (
 `vehicle_id` int(11)
@@ -48,7 +48,7 @@ CREATE TABLE `available_cars` (
 
 --
 -- Zastąpiona struktura widoku `available_planes`
--- (Zobacz poniżej rzeczywisty widok)
+-- (See below for the actual view)
 --
 CREATE TABLE `available_planes` (
 `vehicle_id` int(11)
@@ -80,18 +80,19 @@ CREATE TABLE `equipment` (
   `name` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
   `daily_cost` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `equipment`
+-- Dumping data for table `equipment`
 --
 
 INSERT INTO `equipment` (`equipment_id`, `name`, `description`, `daily_cost`) VALUES
-(1, 'Nawigacja GPS', 'System nawigacji satelitarnej', '30.00'),
-(2, 'Dziecięcy fotelik', 'Fotelik samochodowy dla dzieci', '20.00'),
-(3, 'Wifi w samochodzie', 'Internet mobilny w pojeździe', '50.00'),
-(4, 'Dodatkowe ubezpieczenie', 'Pełne ubezpieczenie bez udziału własnego', '100.00'),
-(5, 'Instruktor lotniczy', 'Dodatkowy pilot-instruktor', '300.00');
+(1, 'Nawigacja GPS', 'System nawigacji satelitarnej', 30.00),
+(2, 'Dziecięcy fotelik', 'Fotelik samochodowy dla dzieci', 20.00),
+(3, 'Wifi w samochodzie', 'Internet mobilny w pojeździe', 50.00),
+(4, 'Dodatkowe ubezpieczenie', 'Pełne ubezpieczenie bez udziału własnego', 105.00),
+(5, 'Instruktor lotniczy', 'Dodatkowy pilot-instruktor', 300.00),
+(6, 'Mapa samochodowa', 'Mapa samochodowa na teren całego kraju', 0.00);
 
 -- --------------------------------------------------------
 
@@ -106,10 +107,10 @@ CREATE TABLE `locations` (
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `is_airport` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `locations`
+-- Dumping data for table `locations`
 --
 
 INSERT INTO `locations` (`location_id`, `city`, `address`, `phone`, `email`, `is_airport`) VALUES
@@ -135,7 +136,14 @@ CREATE TABLE `payments` (
   `transaction_id` varchar(100) DEFAULT NULL,
   `payment_details` text DEFAULT NULL,
   `invoice_number` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `reservation_id`, `amount`, `payment_date`, `payment_method`, `status`, `transaction_id`, `payment_details`, `invoice_number`) VALUES
+(1, 6, 120000.00, '2025-05-27 00:50:06', 'credit_card', 'pending', NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -147,10 +155,10 @@ CREATE TABLE `reservationequipment` (
   `reservation_id` int(11) NOT NULL,
   `equipment_id` int(11) NOT NULL,
   `quantity` int(11) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `reservationequipment`
+-- Dumping data for table `reservationequipment`
 --
 
 INSERT INTO `reservationequipment` (`reservation_id`, `equipment_id`, `quantity`) VALUES
@@ -162,7 +170,12 @@ INSERT INTO `reservationequipment` (`reservation_id`, `equipment_id`, `quantity`
 (9, 1, 1),
 (9, 3, 1),
 (10, 1, 1),
-(10, 2, 1);
+(10, 2, 1),
+(11, 1, 1),
+(12, 1, 1),
+(12, 2, 1),
+(12, 6, 1),
+(13, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -180,21 +193,27 @@ CREATE TABLE `reservations` (
   `return_date` datetime NOT NULL,
   `total_cost` decimal(10,2) NOT NULL,
   `status` enum('pending','confirmed','cancelled','completed') DEFAULT 'pending',
+  `payment_method` enum('credit_card','bank_transfer','cash') DEFAULT NULL,
+  `invoice_request` tinyint(1) DEFAULT 0,
+  `invoice_data` text DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `notes` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `reservations`
+-- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_location_id`, `return_location_id`, `pickup_date`, `return_date`, `total_cost`, `status`, `created_at`, `notes`) VALUES
-(1, 3, 2, 3, 4, '2025-05-19 12:00:00', '2025-05-21 12:00:00', '1000.00', 'cancelled', '2025-05-19 22:49:44', NULL),
-(6, 3, 5, 1, 2, '2025-06-19 12:00:00', '2025-06-20 12:00:00', '120000.00', 'cancelled', '2025-05-19 23:45:30', NULL),
-(7, 4, 6, 1, 1, '2025-05-21 12:00:00', '2025-05-21 12:00:00', '0.00', 'confirmed', '2025-05-20 01:46:52', NULL),
-(8, 4, 3, 3, 2, '2025-05-27 12:00:00', '2025-05-27 18:00:00', '0.00', 'confirmed', '2025-05-25 00:52:12', NULL),
-(9, 4, 3, 1, 1, '2025-05-28 12:00:00', '2025-05-30 12:00:00', '1360.00', 'pending', '2025-05-26 13:56:04', NULL),
-(10, 4, 4, 1, 1, '2025-05-27 12:00:00', '2025-05-28 12:00:00', '49200.00', 'confirmed', '2025-05-26 14:22:53', NULL);
+INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_location_id`, `return_location_id`, `pickup_date`, `return_date`, `total_cost`, `status`, `payment_method`, `invoice_request`, `invoice_data`, `created_at`, `notes`) VALUES
+(1, 3, 2, 3, 4, '2025-05-19 12:00:00', '2025-05-21 12:00:00', 1000.00, 'cancelled', NULL, 0, NULL, '2025-05-19 22:49:44', NULL),
+(6, 3, 5, 1, 2, '2025-06-19 12:00:00', '2025-06-20 12:00:00', 120000.00, 'cancelled', NULL, 0, NULL, '2025-05-19 23:45:30', ''),
+(7, 4, 6, 1, 1, '2025-05-21 12:00:00', '2025-05-21 12:00:00', 0.00, 'cancelled', NULL, 0, NULL, '2025-05-20 01:46:52', NULL),
+(8, 4, 3, 3, 2, '2025-05-27 12:00:00', '2025-05-27 18:00:00', 0.00, 'confirmed', NULL, 0, NULL, '2025-05-25 00:52:12', NULL),
+(9, 4, 3, 1, 1, '2025-05-28 12:00:00', '2025-05-30 12:00:00', 1360.00, 'pending', NULL, 0, NULL, '2025-05-26 13:56:04', ''),
+(10, 4, 4, 1, 1, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 49200.00, 'confirmed', NULL, 0, NULL, '2025-05-26 14:22:53', NULL),
+(11, 4, 2, 3, 4, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 530.00, 'pending', NULL, 0, NULL, '2025-05-26 22:55:46', NULL),
+(12, 4, 6, 1, 4, '2025-06-03 12:00:00', '2025-06-05 12:00:00', 386400.00, 'confirmed', NULL, 0, NULL, '2025-05-26 23:38:07', NULL),
+(13, 4, 4, 1, 1, '2025-07-10 12:00:00', '2025-07-18 12:00:00', 389760.00, 'pending', NULL, 0, NULL, '2025-05-27 00:57:20', NULL);
 
 -- --------------------------------------------------------
 
@@ -210,7 +229,7 @@ CREATE TABLE `reviews` (
   `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5),
   `comment` text DEFAULT NULL,
   `review_date` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -231,10 +250,10 @@ CREATE TABLE `users` (
   `registration_date` datetime DEFAULT current_timestamp(),
   `last_login` datetime DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `email`, `password_hash`, `phone`, `address`, `driver_license_number`, `pilot_license_number`, `registration_date`, `last_login`, `is_admin`) VALUES
@@ -252,7 +271,7 @@ INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `email`, `password_ha
 CREATE TABLE `vehicleequipment` (
   `vehicle_id` int(11) NOT NULL,
   `equipment_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -278,20 +297,21 @@ CREATE TABLE `vehicles` (
   `location_id` int(11) DEFAULT NULL,
   `image_path` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `vehicles`
+-- Dumping data for table `vehicles`
 --
 
 INSERT INTO `vehicles` (`vehicle_id`, `type`, `make`, `model`, `year`, `registration_number`, `capacity`, `fuel_type`, `engine_power`, `max_speed`, `range`, `daily_rate`, `hourly_rate`, `available`, `location_id`, `image_path`, `description`) VALUES
-(1, 'car', 'Audi', 'A6', 2022, 'WA12345', 5, 'Benzyna', '250 KM', NULL, NULL, '400.00', NULL, 1, 1, 'https://img.chceauto.pl/audi/a6/audi-a6-kombi-4472-49497_head.webp', 'Luksusowy sedan z pełnym wyposażeniem'),
-(2, 'car', 'BMW', 'X5', 2021, 'WA67890', 5, 'Diesel', '300 KM', NULL, NULL, '500.00', NULL, 1, 1, 'https://bmw-uzywane.com.pl/assets/photo/upload/cars/30706/vehicle_70f26-scale-1200-0.jpg', 'SUV premium z napędem 4x4'),
-(3, 'car', 'Mercedes-Benz', 'S-Class', 2023, 'KR54321', 4, 'Hybryda', '367 KM', NULL, NULL, '600.00', NULL, 1, 2, 'https://www.motortrend.com/uploads/2023/01/2023-Mercedes-Benz-S580-4Matic-13.jpg?w=768&width=768&q=75&format=webp', 'Flagowy model Mercedesa z najnowszymi technologiami'),
-(4, 'plane', 'Cessna', '172', 2018, 'SP-ABC', 4, 'Avgas', '160 KM', '230 km/h', '1200 km', '0.00', '2000.00', 1, 3, 'https://www.flyouts.com/images/thumbnails/product_image-3285-1306x735.jpg', 'Klasyczny samolot szkolno-turystyczny'),
-(5, 'plane', 'Pilatus', 'PC-12', 2020, 'SP-DEF', 9, 'Jet A-1', '1200 KM', '500 km/h', '3300 km', '0.00', '5000.00', 1, 5, 'https://aviationconsumer.com/wp-content/uploads/2019/09/p1a37g676bfgh1imo3skpe1dpn6.jpg', 'Jednosilnikowy samolot turbośmigłowy biznesowy'),
-(6, 'plane', 'Beechcraft', 'King Air 350', 2019, 'SP-GHI', 11, 'Jet A-1', '2x1050 KM', '560 km/h', '3000 km', '0.00', '8000.00', 1, 5, 'https://images.aircharterservice.com/global/aircraft-guide/private-charter/beechcraft-king-air-300-350-1.jpg', 'Dwusilnikowy samolot biznesowy'),
-(7, 'plane', 'Cessna', 'C152', 1977, 'SP-EPS', 2, 'AvGas', '110', '110kts', '2000', '0.00', '790.00', 1, 5, 'https://www.aircraft24.pl/images/aircraftpics/74/pic_142474_1_xxl.jpg', 'Samolot turystyczno-szkoolnt');
+(1, 'car', 'Audi', 'A6', 2022, 'WA12345', 5, 'Benzyna', '250 KM', NULL, NULL, 400.00, NULL, 1, 1, 'https://img.chceauto.pl/audi/a6/audi-a6-kombi-4472-49497_head.webp', 'Luksusowy sedan z pełnym wyposażeniem'),
+(2, 'car', 'BMW', 'X5', 2021, 'WA67890', 5, 'Diesel', '300 KM', NULL, NULL, 500.00, NULL, 1, 1, 'https://bmw-uzywane.com.pl/assets/photo/upload/cars/30706/vehicle_70f26-scale-1200-0.jpg', 'SUV premium z napędem 4x4'),
+(3, 'car', 'Mercedes-Benz', 'S-Class', 2023, 'KR54321', 4, 'Hybryda', '367 KM', NULL, NULL, 600.00, NULL, 1, 2, 'https://www.motortrend.com/uploads/2023/01/2023-Mercedes-Benz-S580-4Matic-13.jpg?w=768&width=768&q=75&format=webp', 'Flagowy model Mercedesa z najnowszymi technologiami'),
+(4, 'plane', 'Cessna', '172', 2018, 'SP-ABC', 4, 'Avgas', '160 KM', '230 km/h', '1200 km', 0.00, 2000.00, 1, 3, 'https://www.flyouts.com/images/thumbnails/product_image-3285-1306x735.jpg', 'Klasyczny samolot szkolno-turystyczny'),
+(5, 'plane', 'Pilatus', 'PC-12', 2020, 'SP-DEF', 9, 'Jet A-1', '1200 KM', '500 km/h', '3300 km', 0.00, 5000.00, 1, 5, 'https://aviationconsumer.com/wp-content/uploads/2019/09/p1a37g676bfgh1imo3skpe1dpn6.jpg', 'Jednosilnikowy samolot turbośmigłowy biznesowy'),
+(6, 'plane', 'Beechcraft', 'King Air 350', 2019, 'SP-GHI', 11, 'Jet A-1', '2x1050 KM', '560 km/h', '3000 km', 0.00, 8000.00, 1, 5, 'https://images.aircharterservice.com/global/aircraft-guide/private-charter/beechcraft-king-air-300-350-1.jpg', 'Dwusilnikowy samolot biznesowy'),
+(7, 'plane', 'Cessna', 'C152', 1977, 'SP-EPS', 2, 'AvGas', '110', '110kts', '2000', 0.00, 790.00, 1, 5, 'https://www.aircraft24.pl/images/aircraftpics/74/pic_142474_1_xxl.jpg', 'Samolot turystyczno-szkoolnt'),
+(8, 'car', 'BMW', 'BMW M3 Competition', 2023, 'A4 KILLER', 5, 'Benzyna', '480', '', '', 1200.00, 0.00, 1, 1, 'https://kalisz.premiumarena.pl/assets/akol/2859/20250404104000_5962154_z2.jpg', 'Prawdziwie wyścigowy samochód na kazda okazje. Pokaz ze wiesz co naprawde znaczy jezdzic BMW.');
 
 -- --------------------------------------------------------
 
@@ -383,70 +403,70 @@ ALTER TABLE `vehicles`
   ADD KEY `location_id` (`location_id`);
 
 --
--- AUTO_INCREMENT dla zrzuconych tabel
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT dla tabeli `equipment`
+-- AUTO_INCREMENT for table `equipment`
 --
 ALTER TABLE `equipment`
-  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT dla tabeli `locations`
+-- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
   MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT dla tabeli `payments`
+-- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT dla tabeli `reservations`
+-- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT dla tabeli `reviews`
+-- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
   MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT dla tabeli `vehicles`
+-- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- Ograniczenia dla zrzutów tabel
+-- Constraints for dumped tables
 --
 
 --
--- Ograniczenia dla tabeli `payments`
+-- Constraints for table `payments`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`);
 
 --
--- Ograniczenia dla tabeli `reservationequipment`
+-- Constraints for table `reservationequipment`
 --
 ALTER TABLE `reservationequipment`
   ADD CONSTRAINT `reservationequipment_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`),
   ADD CONSTRAINT `reservationequipment_ibfk_2` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 
 --
--- Ograniczenia dla tabeli `reservations`
+-- Constraints for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
@@ -455,7 +475,7 @@ ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_4` FOREIGN KEY (`return_location_id`) REFERENCES `locations` (`location_id`);
 
 --
--- Ograniczenia dla tabeli `reviews`
+-- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
@@ -463,14 +483,14 @@ ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`);
 
 --
--- Ograniczenia dla tabeli `vehicleequipment`
+-- Constraints for table `vehicleequipment`
 --
 ALTER TABLE `vehicleequipment`
   ADD CONSTRAINT `vehicleequipment_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`),
   ADD CONSTRAINT `vehicleequipment_ibfk_2` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 
 --
--- Ograniczenia dla tabeli `vehicles`
+-- Constraints for table `vehicles`
 --
 ALTER TABLE `vehicles`
   ADD CONSTRAINT `vehicles_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`location_id`);
