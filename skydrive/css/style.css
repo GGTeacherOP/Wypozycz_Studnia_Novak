@@ -259,7 +259,75 @@ h2 {
     font-size: 32px;
 }
 
+/* Karty */
+.feature-grid, .vehicle-grid, .location-grid, .choice-grid {
+    display: grid;
+    grid-gap: 30px;
+}
 
+.feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.vehicle-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.location-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.choice-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin: 40px 0;
+}
+
+.feature, .vehicle-card, .location-card, .choice-card {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature:hover, .vehicle-card:hover, .choice-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature i {
+    font-size: 40px;
+    color: #0066cc;
+    margin-bottom: 20px;
+}
+
+.vehicle-card img, .choice-card i {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.price {
+    font-weight: bold;
+    color: #0066cc;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.choice-card {
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+
+.choice-card:first-child {
+    background: linear-gradient(rgba(0, 102, 204, 0.8), rgba(0, 102, 204, 0.8));
+}
+
+.choice-card:last-child {
+    background: linear-gradient(rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.8));
+}
 .choice-card i {
     font-size: 80px;
     margin-bottom: 20px;
