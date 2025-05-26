@@ -5,10 +5,10 @@ checkAdminAuth();
 require_once __DIR__ . '/../includes/config.php';
 
 // Filtry
-$status = isset($_GET['status']) ? $_GET['status'] : '';
-$type = isset($_GET['type']) ? $_GET['type'] : '';
+$status = $_GET['status'] ?? '';
+$type = $_GET['type'] ?? '';
 
-// Budowanie zapytania
+// Zapytanie SQL
 $query = "SELECT r.*, v.make, v.model, v.type, 
           CONCAT(u.first_name, ' ', u.last_name) as customer_name,
           pl.city as pickup_city, rl.city as return_city
@@ -19,12 +19,8 @@ $query = "SELECT r.*, v.make, v.model, v.type,
           JOIN locations rl ON r.return_location_id = rl.location_id
           WHERE 1=1";
 
-if($status) {
-    $query .= " AND r.status = '$status'";
-}
-if($type) {
-    $query .= " AND v.type = '$type'";
-}
+if ($status) $query .= " AND r.status = '$status'";
+if ($type) $query .= " AND v.type = '$type'";
 
 $query .= " ORDER BY r.pickup_date DESC";
 $reservations = $conn->query($query);
@@ -32,9 +28,80 @@ $reservations = $conn->query($query);
 require_once __DIR__ . '/../admin/includes/admin_header.php';
 ?>
 
+<style>
+    .container-fluid h2 {
+        margin-top: 20px;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .card {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .form-select, .btn {
+        min-width: 100px;
+    }
+
+    .table thead th {
+        background-color: #f9fafb;
+        color: #1f2937;
+        font-weight: 600;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background-color: #f3f4f6;
+    }
+
+    .table td, .table th {
+        vertical-align: middle;
+    }
+
+    .badge {
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .badge.bg-success {
+        background-color: #34d399;
+    }
+
+    .badge.bg-warning {
+        background-color: #facc15;
+        color: #78350f;
+    }
+
+    .badge.bg-danger {
+        background-color: #f87171;
+    }
+
+    .table .btn-sm {
+        margin-right: 5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .table .btn-sm i {
+        font-size: 14px;
+    }
+</style>
+
 <div class="container-fluid">
     <h2>Zarządzanie rezerwacjami</h2>
-    
+
     <div class="card mb-4">
         <div class="card-body">
             <form method="get" class="row g-3">
@@ -62,9 +129,9 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
             </form>
         </div>
     </div>
-    
+
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped table-hover align-middle">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -78,7 +145,7 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
                 </tr>
             </thead>
             <tbody>
-                <?php while($res = $reservations->fetch_assoc()): ?>
+                <?php while ($res = $reservations->fetch_assoc()): ?>
                 <tr>
                     <td><?= $res['reservation_id'] ?></td>
                     <td><?= htmlspecialchars($res['customer_name']) ?></td>
@@ -94,21 +161,20 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
                     <td><?= number_format($res['total_cost'], 2) ?> PLN</td>
                     <td>
                         <span class="badge bg-<?= 
-                            $res['status'] == 'confirmed' ? 'success' : 
-                            ($res['status'] == 'pending' ? 'warning' : 'danger') 
-                        ?>">
-                            <?= $res['status'] == 'pending' ? 'Oczekująca' : 
+                            $res['status'] == 'confirmed' ? 'success' :
+                            ($res['status'] == 'pending' ? 'warning' : 'danger') ?>">
+                            <?= $res['status'] == 'pending' ? 'Oczekująca' :
                                ($res['status'] == 'confirmed' ? 'Potwierdzona' : 'Anulowana') ?>
                         </span>
                     </td>
                     <td>
                         <a href="reservation_details.php?id=<?= $res['reservation_id'] ?>" 
                            class="btn btn-sm btn-primary" title="Szczegóły">
-                            <i class="fas fa-eye"></i>
+                            <i class="fas fa-eye"></i> Podgląd
                         </a>
                         <a href="edit_reservation.php?id=<?= $res['reservation_id'] ?>" 
                            class="btn btn-sm btn-warning" title="Edytuj">
-                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-edit"></i> Edytuj
                         </a>
                     </td>
                 </tr>
@@ -117,5 +183,6 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
         </table>
     </div>
 </div>
+
 
 <?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>

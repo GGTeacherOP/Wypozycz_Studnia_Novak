@@ -7,19 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <li><a href="payments.php" class="<?= basename($_SERVER['PHP_SELF']) == 'payments.php' ? 'active' : '' ?>">
-    <i class="fas fa-money-bill-wave"></i> Płatności
-</a></li>
-<li>
-    <a href="manage_reservations.php" class="<?= basename($_SERVER['PHP_SELF']) == 'manage_reservations.php' ? 'active' : '' ?>">
-        <i class="fas fa-calendar-alt"></i> Rezerwacje
-    </a>
-</li>
-<li>
-    <a href="manage_payments.php" class="<?= basename($_SERVER['PHP_SELF']) == 'manage_payments.php' ? 'active' : '' ?>">
-        <i class="fas fa-money-bill-wave"></i> Płatności
-    </a>
-</li>
+
     <style>
         .sidebar {
             position: fixed;
