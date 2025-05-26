@@ -225,6 +225,7 @@ while($eq = $equipment->fetch_assoc()):
         </div>
     </div>
     
-    <?php include 'includes/footer.php'; ?>
+    
 </body>
 </html>
+<?php include '../admin/includes/footer.php'; ?>
