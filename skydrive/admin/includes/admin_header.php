@@ -10,6 +10,16 @@
     <li><a href="payments.php" class="<?= basename($_SERVER['PHP_SELF']) == 'payments.php' ? 'active' : '' ?>">
     <i class="fas fa-money-bill-wave"></i> Płatności
 </a></li>
+<li>
+    <a href="manage_reservations.php" class="<?= basename($_SERVER['PHP_SELF']) == 'manage_reservations.php' ? 'active' : '' ?>">
+        <i class="fas fa-calendar-alt"></i> Rezerwacje
+    </a>
+</li>
+<li>
+    <a href="manage_payments.php" class="<?= basename($_SERVER['PHP_SELF']) == 'manage_payments.php' ? 'active' : '' ?>">
+        <i class="fas fa-money-bill-wave"></i> Płatności
+    </a>
+</li>
     <style>
         .sidebar {
             position: fixed;
