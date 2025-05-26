@@ -2,7 +2,7 @@
 require_once __DIR__ . '/admin_functions.php';
 checkAdminAuth();
 
-require_once __DIR__ . '/../../includes/config.php';
+require_once __DIR__ . '/../includes/config.php';
 
 $reservation_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
