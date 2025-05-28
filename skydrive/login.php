@@ -49,6 +49,90 @@ if(isset($_POST['login'])) {
     <meta charset="UTF-8">
     <title>Logowanie - SkyDrive Rentals</title>
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .login-form {
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 30px 25px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .login-form h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 26px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3f87a6;
+            box-shadow: 0 0 5px rgba(63, 135, 166, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #3f87a6;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #336c86;
+        }
+
+        .alert.error {
+            background-color: #ffe6e6;
+            border-left: 4px solid #f44336;
+            color: #b30000;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .login-form p {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .login-form a {
+            color: #3f87a6;
+            text-decoration: none;
+        }
+
+        .login-form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -62,6 +146,16 @@ if(isset($_POST['login'])) {
         
         <form method="post">
             <div class="form-group">
+
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Hasło:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <button type="submit" name="login" class="btn">Zaloguj</button>
+
                 <label>Email:</label>
                 <input type="email" name="email" required>
             </div>
@@ -70,10 +164,15 @@ if(isset($_POST['login'])) {
                 <input type="password" name="password" required>
             </div>
             <button type="submit" name="login" class="btn btn-primary">Zaloguj</button>
+
             <p>Nie masz konta? <a href="register.php">Zarejestruj się</a></p>
         </form>
     </div>
 
     <?php include 'includes/footer.php'; ?>
 </body>
+
 </html>
+
+</html>
+

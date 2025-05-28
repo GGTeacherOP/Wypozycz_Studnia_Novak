@@ -36,6 +36,31 @@ if(isset($_POST['reserve'])) {
     $user_id = $_SESSION['user_id'];
     $selected_equipment = isset($_POST['equipment']) ? $_POST['equipment'] : [];
 
+    $payment_method = $_POST['payment_method'];
+    $invoice_request = isset($_POST['invoice_request']) ? 1 : 0;
+
+     $invoice_data = null;
+    if($invoice_request) {
+        $invoice_data = json_encode([
+            'company' => $_POST['invoice_company'],
+            'nip' => $_POST['invoice_nip'],
+            'address' => $_POST['invoice_address']
+        ]);
+    }
+
+    // Zmodyfikuj zapytanie INSERT
+    $insert_query = "INSERT INTO reservations
+                    (user_id, vehicle_id, pickup_location_id, return_location_id,
+                    pickup_date, return_date, total_cost, status, 
+                    payment_method, invoice_request, invoice_data)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?)";
+    
+    $stmt = $conn->prepare($insert_query);
+    $stmt->bind_param("iiiissdsss", $user_id, $vehicle_id, $pickup_location,
+                     $return_location, $pickup_date, $return_date, $total_cost,
+                     $payment_method, $invoice_request, $invoice_data);
+
+
     // Sprawdź dostępność pojazdu
     $check_query = "SELECT * FROM reservations 
                    WHERE vehicle_id = ? 
@@ -223,7 +248,40 @@ $locations = $conn->query("SELECT * FROM locations");
                         </select>
                     </div>
                 </div>
-                
+
+                <div class="form-group">
+    <label>Metoda płatności:</label>
+    <select name="payment_method" id="payment_method" required>
+        <option value="">Wybierz metodę płatności</option>
+        <option value="credit_card">Karta kredytowa</option>
+        <option value="bank_transfer">Przelew bankowy</option>
+        <option value="cash">Gotówka</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>
+        <input type="checkbox" name="invoice_request" id="invoice_request"> 
+        Chcę otrzymać fakturę
+    </label>
+</div>
+
+<div id="invoice_fields" style="display: none;">
+    <h3>Dane do faktury</h3>
+    <div class="form-group">
+        <label>Nazwa firmy:</label>
+        <input type="text" name="invoice_company">
+    </div>
+    <div class="form-group">
+        <label>NIP:</label>
+        <input type="text" name="invoice_nip" pattern="[0-9]{10}">
+    </div>
+    <div class="form-group">
+        <label>Adres:</label>
+        <input type="text" name="invoice_address">
+    </div>
+</div>
+
                 <h3>Dodatkowe wyposażenie</h3>
                 <?php if($equipment->num_rows > 0): ?>
                     <div class="equipment-grid">
@@ -342,6 +400,13 @@ $locations = $conn->query("SELECT * FROM locations");
                     `<strong>Łączny koszt: ${totalPrice.toFixed(2)} PLN</strong>`;
             }
         }
+
+
+        document.getElementById('invoice_request').addEventListener('change', function() {
+    document.getElementById('invoice_fields').style.display = 
+        this.checked ? 'block' : 'none';
+});
+
     </script>
     
     <?php include 'includes/footer.php'; ?>

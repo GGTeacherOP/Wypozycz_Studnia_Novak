@@ -139,6 +139,8 @@ nav ul li a:hover {
     transform: translateY(-2px);
 }
 
+
+
 /* Stopka */
 footer {
     background-color: #2c3e50;
@@ -146,6 +148,7 @@ footer {
     padding: 40px 0 20px;
     margin-top: 50px;
 }
+
 
 .footer-content {
     display: grid;
@@ -337,6 +340,7 @@ h2 {
     background: linear-gradient(rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.8));
 }
 
+
 .choice-card i {
     font-size: 80px;
     margin-bottom: 20px;
@@ -488,10 +492,19 @@ tr:nth-child(even) {
 footer {
     background-color: #333;
     color: white;
+
+    padding: 40px 0 20px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+
+
     text-align: center;
     padding: 20px 0;
     margin-top: 50px;
 }
+
 
 /* Formularz rejestracji */
 .register-form {
@@ -598,6 +611,8 @@ footer {
     font-size: 18px;
     color: #666;
 }
+
+
 /* Stopka */
 footer {
     background-color: #333;
@@ -605,6 +620,7 @@ footer {
     padding: 40px 0 20px;
     margin-top: 50px;
 }
+
 
 .footer-content {
     display: grid;
@@ -910,4 +926,13 @@ header nav ul {
 
 .btn-admin:hover {
     background-color: #5a6268;
+
 }
+
+
+
+/*NOWY KODDDD */
+
+=======
+}
+
