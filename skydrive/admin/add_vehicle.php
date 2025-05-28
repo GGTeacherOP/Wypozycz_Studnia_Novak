@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($stmt->execute()) {
             $_SESSION['success'] = "Pojazd został pomyślnie dodany";
-            header("Location: manage_vehicles.php");
+            header("Location: pages/manage_vehicles.php");
             exit();
         } else {
             $errors[] = "Błąd podczas dodawania pojazdu: " . $conn->error;
