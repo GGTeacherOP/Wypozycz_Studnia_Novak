@@ -4,6 +4,7 @@ include 'includes/config.php';
 include 'includes/header.php';
 ?>
 
+
 <style>
 .hero {
     background-size: cover;
@@ -179,6 +180,10 @@ include 'includes/header.php';
 
 <div class="hero" style="background-image: url(images/background.jpg);">
     <div class="hero-content">
+
+<div class="hero" style="background-image: url(images/background.jpg);">
+    <div class="hero-content" >
+
         <h1>SkyDrive Rentals</h1>
         <p>Wynajmij samochód lub samolot dla swoich potrzeb</p>
         <a href="vehicles.php" class="btn btn-primary">Zarezerwuj teraz</a>
@@ -222,7 +227,11 @@ include 'includes/header.php';
                 echo '<h3>' . $row['make'] . ' ' . $row['model'] . '</h3>';
                 echo '<p>' . ($row['type'] == 'car' ? 'Samochód' : 'Samolot') . ' • ' . $row['year'] . '</p>';
                 echo '<p class="price">' . ($row['type'] == 'car' ? 'od ' . $row['daily_rate'] . ' PLN/dzień' : 'od ' . $row['hourly_rate'] . ' PLN/godzina') . '</p>';
+
                 echo '<a href="vehicles.php?type=' . $row['type'] . '" class="btn-secondary">Zobacz więcej</a>';
+
+                echo '<a href="vehicles.php?type=' . $row['type'] . '" class="btn btn-secondary">Zobacz więcej</a>';
+
                 echo '</div>';
             }
             ?>
@@ -230,4 +239,8 @@ include 'includes/header.php';
     </div>
 </section>
 
+
 <?php include 'includes/footer.php'; ?>
+=======
+<?php include 'includes/footer.php'; ?>
+

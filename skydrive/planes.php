@@ -2,6 +2,7 @@
 session_start();
 include 'includes/config.php';
 include 'includes/header.php';
+
 ?>
 <link rel="stylesheet" href="style.css">
 
@@ -140,6 +141,16 @@ button.btn, a.btn {
 <div class="vehicles-container">
     <h1>Dostępne samoloty</h1>
 
+
+// Pobierz dostępne samoloty
+$query = "SELECT * FROM available_planes";
+$result = $conn->query($query);
+?>
+
+<div class="vehicles-container">
+    <h1>Dostępne samoloty</h1>
+    
+
     <div class="filter-section">
         <form method="get">
             <div class="form-row">
@@ -173,9 +184,16 @@ button.btn, a.btn {
         </form>
     </div>
 
+
     <div class="vehicles-grid">
         <?php
         // Filtrowanie zapytania
+
+    
+    <div class="vehicles-grid">
+        <?php
+        // Budowanie zapytania z filtrami
+
         $query = "SELECT * FROM available_planes WHERE 1=1";
         
         if(isset($_GET['location']) && !empty($_GET['location'])) {
@@ -202,10 +220,17 @@ button.btn, a.btn {
                 echo '<img src="' . $plane['image_path'] . '" alt="' . $plane['make'] . ' ' . $plane['model'] . '">';
                 echo '<div class="vehicle-details">';
                 echo '<h3>' . $plane['make'] . ' ' . $plane['model'] . ' (' . $plane['year'] . ')</h3>';
+
                 echo '<p><i class="fas fa-users"></i>' . $plane['capacity'] . ' osób</p>';
                 echo '<p><i class="fas fa-tachometer-alt"></i>' . $plane['max_speed'] . ' km/h</p>';
                 echo '<p><i class="fas fa-gas-pump"></i>' . $plane['fuel_type'] . '</p>';
                 echo '<p><i class="fas fa-map-marked-alt"></i>' . $plane['city'] . ' - ' . $plane['address'] . '</p>';
+
+                echo '<p><i class="fas fa-users"></i> ' . $plane['capacity'] . ' osób</p>';
+                echo '<p><i class="fas fa-tachometer-alt"></i> ' . $plane['max_speed'] . ' km/h</p>';
+                echo '<p><i class="fas fa-gas-pump"></i> ' . $plane['fuel_type'] . '</p>';
+                echo '<p><i class="fas fa-map-marked-alt"></i> ' . $plane['city'] . ' - ' . $plane['address'] . '</p>';
+
                 echo '<p class="price">' . $plane['hourly_rate'] . ' PLN/godzina</p>';
                 echo '<a href="reserve.php?type=plane&id=' . $plane['vehicle_id'] . '" class="btn btn-primary">Zarezerwuj</a>';
                 echo '</div>';
@@ -218,4 +243,8 @@ button.btn, a.btn {
     </div>
 </div>
 
+
 <?php include 'includes/footer.php'; ?>
+
+<?php include 'includes/footer.php'; ?>
+

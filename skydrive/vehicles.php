@@ -3,6 +3,7 @@ session_start();
 include 'includes/config.php';
 include 'includes/header.php';
 ?>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -194,9 +195,11 @@ a {
 }
 </style>
 
+
 <div class="vehicle-choice">
     <div class="container">
         <h1>Wybierz typ pojazdu</h1>
+
         <div class="wrapper">
             <div class="option samolot">
                 <a href="planes.php">
@@ -220,10 +223,32 @@ a {
                 <button onclick="filterLocations('office')">Biura</button>
             </div>
 
+
+        <div class="choice-grid">
+            <a href="cars.php" class="choice-card" style="background-image: url(images/car.jpg);">
+                <div class="choice-content">
+                    <i class="fas fa-car"></i>
+                    <h2>Samochody</h2>
+                    <p>Luksusowe auta na każdą okazję</p>
+                </div>
+            </a>
+            <a href="planes.php" class="choice-card"style="background-image: url(images/plane.jpg);">
+                <div class="choice-content" >
+                    <i class="fas fa-plane"></i>
+                    <h2>Samoloty</h2>
+                    <p>Profesjonalne maszyny do wynajęcia</p>
+                </div>
+            </a>
+        </div>
+        
+        <div class="locations">
+            <h2>Nasze lokalizacje</h2>
+
             <div class="location-grid">
                 <?php
                 $query = "SELECT * FROM locations";
                 $result = $conn->query($query);
+
                 while($row = $result->fetch_assoc()) {
                     $type = $row['is_airport'] ? 'airport' : 'office';
                     echo '<div class="location-card" data-type="'.$type.'">';
@@ -231,6 +256,15 @@ a {
                     echo '<p><i class="fas fa-map-marker-alt"></i>' . $row['address'] . '</p>';
                     echo '<p><i class="fas fa-phone"></i>' . $row['phone'] . '</p>';
                     echo '<p><i class="fas fa-building"></i>' . ($row['is_airport'] ? 'Lotnisko' : 'Biuro wynajmu') . '</p>';
+
+                
+                while($row = $result->fetch_assoc()) {
+                    echo '<div class="location-card">';
+                    echo '<h3>' . $row['city'] . '</h3>';
+                    echo '<p>' . $row['address'] . '</p>';
+                    echo '<p>' . $row['phone'] . '</p>';
+                    echo '<p>' . ($row['is_airport'] ? 'Lotnisko' : 'Biuro wynajmu') . '</p>';
+
                     echo '</div>';
                 }
                 ?>
@@ -238,6 +272,7 @@ a {
         </div>
     </div>
 </div>
+
 
 <script>
 function filterLocations(type) {
@@ -253,6 +288,7 @@ function filterLocations(type) {
     }
 }
 </script>
+
 
 
 

@@ -1,6 +1,10 @@
 <?php
 include '../includes/auth.php';
+
 include '../../includes/config.php';
+=======
+include '../includes/config.php';
+
 
 // Dodawanie lokalizacji
 if(isset($_POST['add_location'])) {

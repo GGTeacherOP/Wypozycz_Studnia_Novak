@@ -1,8 +1,15 @@
 <?php
+
 require_once __DIR__ . '../admin_functions.php';
 checkAdminAuth();
 
 require_once __DIR__ . '/../includes/config.php';
+=======
+require_once __DIR__ . '/../admin_functions.php';
+checkAdminAuth();
+
+require_once __DIR__ . '/../../includes/config.php';
+
 
 if (!isset($_GET['id'])) {
     header("Location: manage_vehicles.php");
@@ -83,7 +90,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Pobierz lokalizacje dla selecta
 $locations = $conn->query("SELECT * FROM locations ORDER BY city");
 
+
 require_once __DIR__ . '/../admin/includes/admin_header.php';
+=======
+require_once __DIR__ . '/../includes/admin_header.php';
+
 ?>
 
 <div class="container-fluid">
@@ -207,7 +218,11 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
         </div>
         
         <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+
         <a href="pages/manage_vehicles.php" class="btn btn-secondary">Anuluj</a>
+=======
+        <a href="manage_vehicles.php" class="btn btn-secondary">Anuluj</a>
+
     </form>
 </div>
 
@@ -219,4 +234,8 @@ document.getElementById('vehicleType').addEventListener('change', function() {
 });
 </script>
 
+
 <?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>
+=======
+<?php require_once __DIR__ . '/../includes/admin_footer.php'; ?>
+
