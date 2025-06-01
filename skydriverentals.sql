@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 27, 2025 at 01:03 AM
+-- Generation Time: Cze 01, 2025 at 10:44 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -90,9 +90,8 @@ INSERT INTO `equipment` (`equipment_id`, `name`, `description`, `daily_cost`) VA
 (1, 'Nawigacja GPS', 'System nawigacji satelitarnej', 30.00),
 (2, 'Dziecięcy fotelik', 'Fotelik samochodowy dla dzieci', 20.00),
 (3, 'Wifi w samochodzie', 'Internet mobilny w pojeździe', 50.00),
-(4, 'Dodatkowe ubezpieczenie', 'Pełne ubezpieczenie bez udziału własnego', 105.00),
-(5, 'Instruktor lotniczy', 'Dodatkowy pilot-instruktor', 300.00),
-(6, 'Mapa samochodowa', 'Mapa samochodowa na teren całego kraju', 0.00);
+(4, 'Dodatkowe ubezpieczenie', 'Pełne ubezpieczenie bez udziału własnego', 100.00),
+(5, 'Instruktor lotniczy', 'Dodatkowy pilot-instruktor', 300.00);
 
 -- --------------------------------------------------------
 
@@ -123,6 +122,27 @@ INSERT INTO `locations` (`location_id`, `city`, `address`, `phone`, `email`, `is
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `opinions`
+--
+
+CREATE TABLE `opinions` (
+  `id` int(11) NOT NULL,
+  `author_name` varchar(50) NOT NULL,
+  `rating` tinyint(1) NOT NULL CHECK (`rating` between 1 and 5),
+  `comment` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `opinions`
+--
+
+INSERT INTO `opinions` (`id`, `author_name`, `rating`, `comment`, `created_at`) VALUES
+(1, 'Apexi', 5, 'adas', '2025-05-28 19:59:02');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `payments`
 --
 
@@ -137,13 +157,6 @@ CREATE TABLE `payments` (
   `payment_details` text DEFAULT NULL,
   `invoice_number` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `payments`
---
-
-INSERT INTO `payments` (`payment_id`, `reservation_id`, `amount`, `payment_date`, `payment_method`, `status`, `transaction_id`, `payment_details`, `invoice_number`) VALUES
-(1, 6, 120000.00, '2025-05-27 00:50:06', 'credit_card', 'pending', NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -170,12 +183,7 @@ INSERT INTO `reservationequipment` (`reservation_id`, `equipment_id`, `quantity`
 (9, 1, 1),
 (9, 3, 1),
 (10, 1, 1),
-(10, 2, 1),
-(11, 1, 1),
-(12, 1, 1),
-(12, 2, 1),
-(12, 6, 1),
-(13, 1, 1);
+(10, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -193,9 +201,6 @@ CREATE TABLE `reservations` (
   `return_date` datetime NOT NULL,
   `total_cost` decimal(10,2) NOT NULL,
   `status` enum('pending','confirmed','cancelled','completed') DEFAULT 'pending',
-  `payment_method` enum('credit_card','bank_transfer','cash') DEFAULT NULL,
-  `invoice_request` tinyint(1) DEFAULT 0,
-  `invoice_data` text DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -204,16 +209,16 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_location_id`, `return_location_id`, `pickup_date`, `return_date`, `total_cost`, `status`, `payment_method`, `invoice_request`, `invoice_data`, `created_at`, `notes`) VALUES
-(1, 3, 2, 3, 4, '2025-05-19 12:00:00', '2025-05-21 12:00:00', 1000.00, 'cancelled', NULL, 0, NULL, '2025-05-19 22:49:44', NULL),
-(6, 3, 5, 1, 2, '2025-06-19 12:00:00', '2025-06-20 12:00:00', 120000.00, 'cancelled', NULL, 0, NULL, '2025-05-19 23:45:30', ''),
-(7, 4, 6, 1, 1, '2025-05-21 12:00:00', '2025-05-21 12:00:00', 0.00, 'cancelled', NULL, 0, NULL, '2025-05-20 01:46:52', NULL),
-(8, 4, 3, 3, 2, '2025-05-27 12:00:00', '2025-05-27 18:00:00', 0.00, 'confirmed', NULL, 0, NULL, '2025-05-25 00:52:12', NULL),
-(9, 4, 3, 1, 1, '2025-05-28 12:00:00', '2025-05-30 12:00:00', 1360.00, 'pending', NULL, 0, NULL, '2025-05-26 13:56:04', ''),
-(10, 4, 4, 1, 1, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 49200.00, 'confirmed', NULL, 0, NULL, '2025-05-26 14:22:53', NULL),
-(11, 4, 2, 3, 4, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 530.00, 'pending', NULL, 0, NULL, '2025-05-26 22:55:46', NULL),
-(12, 4, 6, 1, 4, '2025-06-03 12:00:00', '2025-06-05 12:00:00', 386400.00, 'confirmed', NULL, 0, NULL, '2025-05-26 23:38:07', NULL),
-(13, 4, 4, 1, 1, '2025-07-10 12:00:00', '2025-07-18 12:00:00', 389760.00, 'pending', NULL, 0, NULL, '2025-05-27 00:57:20', NULL);
+INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_location_id`, `return_location_id`, `pickup_date`, `return_date`, `total_cost`, `status`, `created_at`, `notes`) VALUES
+(1, 3, 2, 3, 4, '2025-05-19 12:00:00', '2025-05-21 12:00:00', 1000.00, 'cancelled', '2025-05-19 22:49:44', NULL),
+(6, 3, 5, 1, 2, '2025-06-19 12:00:00', '2025-06-20 12:00:00', 120000.00, 'cancelled', '2025-05-19 23:45:30', NULL),
+(7, 4, 6, 1, 1, '2025-05-21 12:00:00', '2025-05-21 12:00:00', 0.00, 'confirmed', '2025-05-20 01:46:52', NULL),
+(8, 4, 3, 3, 2, '2025-05-27 12:00:00', '2025-05-27 18:00:00', 0.00, 'confirmed', '2025-05-25 00:52:12', NULL),
+(9, 4, 3, 1, 1, '2025-05-28 12:00:00', '2025-05-30 12:00:00', 1360.00, 'pending', '2025-05-26 13:56:04', NULL),
+(10, 4, 4, 1, 1, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 49200.00, 'confirmed', '2025-05-26 14:22:53', NULL),
+(11, 6, 1, 1, 1, '2025-05-28 12:00:00', '2025-05-31 12:00:00', 1200.00, 'cancelled', '2025-05-26 22:26:48', NULL),
+(12, 6, 1, 1, 1, '2025-06-20 12:00:00', '2025-07-15 12:00:00', 10000.00, 'cancelled', '2025-05-26 23:38:54', NULL),
+(13, 6, 2, 1, 1, '2025-05-30 12:00:00', '2025-05-29 12:00:00', 500.00, 'cancelled', '2025-05-26 23:39:23', NULL);
 
 -- --------------------------------------------------------
 
@@ -222,14 +227,22 @@ INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_l
 --
 
 CREATE TABLE `reviews` (
-  `review_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `vehicle_id` int(11) NOT NULL,
-  `reservation_id` int(11) NOT NULL,
-  `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5),
-  `comment` text DEFAULT NULL,
-  `review_date` datetime DEFAULT current_timestamp()
+  `content` text NOT NULL,
+  `rating` int(11) NOT NULL CHECK (`rating` between 1 and 5),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_approved` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `user_id`, `content`, `rating`, `created_at`, `is_approved`) VALUES
+(1, 6, 'aaa', 5, '2025-06-01 20:29:00', 0),
+(2, 6, 'mistrzostwo klasa', 5, '2025-06-01 20:30:22', 0),
+(3, 6, 'a jak \r\n', 2, '2025-06-01 20:30:30', 0);
 
 -- --------------------------------------------------------
 
@@ -260,7 +273,8 @@ INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `email`, `password_ha
 (2, 'Jan', 'Bananowicz', 'loczkek2@gmail.com', '$2y$10$TWXpv/sZJG5GQ5L686wuZO9YsSZhzFBeuJvDtpM5ZLSY1WrWPAlwu', '727766999', 'Lotniskowa', '42424', 'ULC1231/25', '2025-05-19 21:16:02', NULL, 0),
 (3, 'Jan', 'Bednarek', 'benarek@gmail.com', '$2y$10$1Jh.yFqrqI/JVEiMjCj5b.sDPMg06.SjelgPgCZzgfCHI0dtnqrn6', '123456789', 'Boisko Piłkarskie 112', 'NIEMAM', 'ULC564', '2025-05-19 21:25:28', NULL, 0),
 (4, 'Pantera', 'Pantera', 'pantera@gmail.com', '$2y$10$Id93ZdhHf1kRmXbWoXv68ekMfX9tadgYwAq4uh6zhbuYV9I/Z.qL2', '72725252', 'panterkowa12 Warszawa', '121241', '', '2025-05-19 22:50:34', NULL, 0),
-(5, 'Admin', 'SkyDrive', 'admin@skydrive.pl', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, NULL, NULL, NULL, '2025-05-19 23:16:45', NULL, 1);
+(5, 'Admin', 'SkyDrive', 'admin@skydrive.pl', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, NULL, NULL, NULL, '2025-05-19 23:16:45', NULL, 1),
+(6, 'ada', 'ggg', 'konrad747nowak@gmail.com', '$2y$10$JxDKrmWa7pJe87dYNtjFDeuakEXkWwz2uJlI8Od8KrxnMcut2HRyG', '213112333', 'adasddd', '1231131331', '23422222243242', '2025-05-26 22:26:23', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -310,8 +324,7 @@ INSERT INTO `vehicles` (`vehicle_id`, `type`, `make`, `model`, `year`, `registra
 (4, 'plane', 'Cessna', '172', 2018, 'SP-ABC', 4, 'Avgas', '160 KM', '230 km/h', '1200 km', 0.00, 2000.00, 1, 3, 'https://www.flyouts.com/images/thumbnails/product_image-3285-1306x735.jpg', 'Klasyczny samolot szkolno-turystyczny'),
 (5, 'plane', 'Pilatus', 'PC-12', 2020, 'SP-DEF', 9, 'Jet A-1', '1200 KM', '500 km/h', '3300 km', 0.00, 5000.00, 1, 5, 'https://aviationconsumer.com/wp-content/uploads/2019/09/p1a37g676bfgh1imo3skpe1dpn6.jpg', 'Jednosilnikowy samolot turbośmigłowy biznesowy'),
 (6, 'plane', 'Beechcraft', 'King Air 350', 2019, 'SP-GHI', 11, 'Jet A-1', '2x1050 KM', '560 km/h', '3000 km', 0.00, 8000.00, 1, 5, 'https://images.aircharterservice.com/global/aircraft-guide/private-charter/beechcraft-king-air-300-350-1.jpg', 'Dwusilnikowy samolot biznesowy'),
-(7, 'plane', 'Cessna', 'C152', 1977, 'SP-EPS', 2, 'AvGas', '110', '110kts', '2000', 0.00, 790.00, 1, 5, 'https://www.aircraft24.pl/images/aircraftpics/74/pic_142474_1_xxl.jpg', 'Samolot turystyczno-szkoolnt'),
-(8, 'car', 'BMW', 'BMW M3 Competition', 2023, 'A4 KILLER', 5, 'Benzyna', '480', '', '', 1200.00, 0.00, 1, 1, 'https://kalisz.premiumarena.pl/assets/akol/2859/20250404104000_5962154_z2.jpg', 'Prawdziwie wyścigowy samochód na kazda okazje. Pokaz ze wiesz co naprawde znaczy jezdzic BMW.');
+(7, 'plane', 'Cessna', 'C152', 1977, 'SP-EPS', 2, 'AvGas', '110', '110kts', '2000', 0.00, 790.00, 1, 5, 'https://www.aircraft24.pl/images/aircraftpics/74/pic_142474_1_xxl.jpg', 'Samolot turystyczno-szkoolnt');
 
 -- --------------------------------------------------------
 
@@ -348,6 +361,12 @@ ALTER TABLE `locations`
   ADD PRIMARY KEY (`location_id`);
 
 --
+-- Indeksy dla tabeli `opinions`
+--
+ALTER TABLE `opinions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeksy dla tabeli `payments`
 --
 ALTER TABLE `payments`
@@ -375,10 +394,8 @@ ALTER TABLE `reservations`
 -- Indeksy dla tabeli `reviews`
 --
 ALTER TABLE `reviews`
-  ADD PRIMARY KEY (`review_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `vehicle_id` (`vehicle_id`),
-  ADD KEY `reservation_id` (`reservation_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indeksy dla tabeli `users`
@@ -410,7 +427,7 @@ ALTER TABLE `vehicles`
 -- AUTO_INCREMENT for table `equipment`
 --
 ALTER TABLE `equipment`
-  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `locations`
@@ -419,10 +436,16 @@ ALTER TABLE `locations`
   MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `opinions`
+--
+ALTER TABLE `opinions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reservations`
@@ -434,19 +457,19 @@ ALTER TABLE `reservations`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -478,9 +501,7 @@ ALTER TABLE `reservations`
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`),
-  ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`);
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `vehicleequipment`
