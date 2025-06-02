@@ -172,7 +172,7 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
                            class="btn btn-sm btn-primary" title="Szczegóły">
                             <i class="fas fa-eye"></i> Podgląd
                         </a>
-                        <a href="edit_reservations.php?id=<?= $res['reservation_id'] ?>" 
+                        <a href="edit_reservation.php?id=<?= $res['reservation_id'] ?>" 
                            class="btn btn-sm btn-warning" title="Edytuj">
                             <i class="fas fa-edit"></i> Edytuj
                         </a>

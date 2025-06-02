@@ -15,6 +15,7 @@ $reviews = $db->query("
     SELECT users.first_name, reviews.* 
     FROM reviews 
     JOIN users ON reviews.user_id = users.user_id 
+    Where reviews.is_approved = 1
     ORDER BY created_at DESC
 ");
 ?>
