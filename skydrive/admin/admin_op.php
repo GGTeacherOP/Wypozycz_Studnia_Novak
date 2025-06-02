@@ -2,11 +2,8 @@
 require_once __DIR__ . '/../includes/config.php';
 session_start();
 
-// Sprawdź czy użytkownik jest zalogowany jako admin
-if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-    header("Location: ../login.php");
-    exit;
-}
+require_once __DIR__ . '/../admin/admin_functions.php';
+checkAdminAuth();
 
 // Obsługa akcji admina
 if (isset($_GET['action'])) {
@@ -24,9 +21,9 @@ if (isset($_GET['action'])) {
 
 // Pobierz opinie do moderacji
 $reviews = $db->query("
-    SELECT r.*, u.username 
+    SELECT r.*, u.first_name 
     FROM reviews r
-    LEFT JOIN users u ON r.user_id = u.id
+    LEFT JOIN users u ON r.user_id = u.user_id
     ORDER BY r.is_approved, r.created_at DESC
 ");
 ?>
@@ -56,7 +53,7 @@ $reviews = $db->query("
                 <?php while ($review = $reviews->fetch()): ?>
                 <tr class="<?= $review['is_approved'] ? 'approved' : 'pending' ?>">
                     <td><?= $review['id'] ?></td>
-                    <td><?= htmlspecialchars($review['username']) ?></td>
+                    <td><?= htmlspecialchars($review['first_name']) ?></td>
                     <td><?= htmlspecialchars($review['content']) ?></td>
                     <td><?= str_repeat('★', $review['rating']) ?></td>
                     <td><?= date('d.m.Y H:i', strtotime($review['created_at'])) ?></td>

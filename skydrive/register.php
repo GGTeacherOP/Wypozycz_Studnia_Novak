@@ -24,10 +24,6 @@ if(isset($_POST['register'])) {
     } elseif(strlen($password) < 8) {
         $error = 'Hasło musi mieć co najmniej 8 znaków';
     } else {
-
-
-        // Sprawdź czy email już istnieje
-
         $stmt = $conn->prepare("SELECT email FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -36,14 +32,7 @@ if(isset($_POST['register'])) {
         if($stmt->num_rows > 0) {
             $error = 'Email jest już zarejestrowany';
         } else {
-
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-            // Hashowanie hasła
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            
-            // Wstawienie do bazy
-
             $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password_hash, phone, address, driver_license_number, pilot_license_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("ssssssss", $firstName, $lastName, $email, $passwordHash, $phone, $address, $driverLicense, $pilotLicense);
             
@@ -56,7 +45,6 @@ if(isset($_POST['register'])) {
     }
 }
 ?>
-
 
 <style>
 .register-form {
@@ -158,7 +146,6 @@ if(isset($_POST['register'])) {
 }
 </style>
 
-
 <div class="register-form">
     <h1>Rejestracja</h1>
     
@@ -218,18 +205,10 @@ if(isset($_POST['register'])) {
                 <input type="text" name="pilot_license" value="<?= isset($_POST['pilot_license']) ? htmlspecialchars($_POST['pilot_license']) : '' ?>">
             </div>
             
-
             <button type="submit" name="register" class="btn">Zarejestruj się</button>
-
-            <button type="submit" name="register" class="btn btn-primary">Zarejestruj się</button>
-
             <p>Masz już konto? <a href="login.php">Zaloguj się</a></p>
         </form>
     <?php endif; ?>
 </div>
 
-
 <?php include 'includes/footer.php'; ?>
-
-<?php include 'includes/footer.php'; ?>
-

@@ -49,7 +49,6 @@ if(isset($_POST['login'])) {
     <meta charset="UTF-8">
     <title>Logowanie - SkyDrive Rentals</title>
     <link rel="stylesheet" href="css/style.css">
-
     <style>
         .login-form {
             max-width: 400px;
@@ -131,8 +130,6 @@ if(isset($_POST['login'])) {
             text-decoration: underline;
         }
     </style>
-
-
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -146,7 +143,6 @@ if(isset($_POST['login'])) {
         
         <form method="post">
             <div class="form-group">
-
                 <label for="email">Email:</label>
                 <input type="email" name="email" id="email" required>
             </div>
@@ -155,24 +151,10 @@ if(isset($_POST['login'])) {
                 <input type="password" name="password" id="password" required>
             </div>
             <button type="submit" name="login" class="btn">Zaloguj</button>
-
-                <label>Email:</label>
-                <input type="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label>Hasło:</label>
-                <input type="password" name="password" required>
-            </div>
-            <button type="submit" name="login" class="btn btn-primary">Zaloguj</button>
-
             <p>Nie masz konta? <a href="register.php">Zarejestruj się</a></p>
         </form>
     </div>
 
     <?php include 'includes/footer.php'; ?>
 </body>
-
 </html>
-
-</html>
-

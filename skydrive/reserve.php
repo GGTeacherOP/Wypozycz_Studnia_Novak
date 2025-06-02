@@ -35,7 +35,6 @@ if(isset($_POST['reserve'])) {
     $return_location = intval($_POST['return_location']);
     $user_id = $_SESSION['user_id'];
     $selected_equipment = isset($_POST['equipment']) ? $_POST['equipment'] : [];
-
     $payment_method = $_POST['payment_method'];
     $invoice_request = isset($_POST['invoice_request']) ? 1 : 0;
 
@@ -59,7 +58,6 @@ if(isset($_POST['reserve'])) {
     $stmt->bind_param("iiiissdsss", $user_id, $vehicle_id, $pickup_location,
                      $return_location, $pickup_date, $return_date, $total_cost,
                      $payment_method, $invoice_request, $invoice_data);
-
 
     // Sprawdź dostępność pojazdu
     $check_query = "SELECT * FROM reservations 
@@ -248,7 +246,6 @@ $locations = $conn->query("SELECT * FROM locations");
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group">
     <label>Metoda płatności:</label>
     <select name="payment_method" id="payment_method" required>
@@ -281,7 +278,6 @@ $locations = $conn->query("SELECT * FROM locations");
         <input type="text" name="invoice_address">
     </div>
 </div>
-
                 <h3>Dodatkowe wyposażenie</h3>
                 <?php if($equipment->num_rows > 0): ?>
                     <div class="equipment-grid">
@@ -401,12 +397,10 @@ $locations = $conn->query("SELECT * FROM locations");
             }
         }
 
-
         document.getElementById('invoice_request').addEventListener('change', function() {
     document.getElementById('invoice_fields').style.display = 
         this.checked ? 'block' : 'none';
 });
-
     </script>
     
     <?php include 'includes/footer.php'; ?>

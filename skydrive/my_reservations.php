@@ -29,27 +29,17 @@ if(isset($_GET['cancel'])) {
     exit();
 }
 
-
 // Pobierz rezerwacje użytkownika z informacjami o płatnościach
 $query = "SELECT r.*, v.make, v.model, v.type, v.image_path,
           pl.city as pickup_city, pl.address as pickup_address,
           rl.city as return_city, rl.address as return_address,
           p.status as payment_status, p.payment_method, p.payment_date,
           p.amount as payment_amount, p.invoice_number
-
-// Pobierz rezerwacje użytkownika
-$query = "SELECT r.*, v.make, v.model, v.type, 
-          pl.city as pickup_city, pl.address as pickup_address,
-          rl.city as return_city, rl.address as return_address
-
           FROM reservations r
           JOIN vehicles v ON r.vehicle_id = v.vehicle_id
           JOIN locations pl ON r.pickup_location_id = pl.location_id
           JOIN locations rl ON r.return_location_id = rl.location_id
-
           LEFT JOIN payments p ON r.reservation_id = p.reservation_id
-=======
-
           WHERE r.user_id = ?
           ORDER BY r.pickup_date DESC";
 $stmt = $conn->prepare($query);
@@ -64,7 +54,6 @@ $reservations = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Moje rezerwacje - SkyDrive</title>
     <link rel="stylesheet" href="css/style.css">
-
     <style>
         .reservations-grid {
             display: grid;
@@ -174,7 +163,6 @@ $reservations = $stmt->get_result();
             color: #721c24;
         }
     </style>
-
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -202,12 +190,10 @@ $reservations = $stmt->get_result();
                             ?></span>
                         </div>
                         
-
                         <?php if($res['image_path']): ?>
                             <img src="<?= htmlspecialchars($res['image_path']) ?>" alt="<?= htmlspecialchars($res['make']) ?> <?= htmlspecialchars($res['model']) ?>" class="vehicle-image">
                         <?php endif; ?>
                         
-
                         <div class="reservation-details">
                             <p><strong>Nr rezerwacji:</strong> <?= $res['reservation_id'] ?></p>
                             <p><strong>Data odbioru:</strong> <?= date('d.m.Y H:i', strtotime($res['pickup_date'])) ?></p>
@@ -217,7 +203,6 @@ $reservations = $stmt->get_result();
                             <p><strong>Koszt:</strong> <?= number_format($res['total_cost'], 2) ?> PLN</p>
                         </div>
                         
-
                         <div class="payment-info">
                             <p><strong>Płatność:</strong> 
                                 <?php if($res['payment_status']): ?>
@@ -243,16 +228,13 @@ $reservations = $stmt->get_result();
                             <?php endif; ?>
                         </div>
                         
-
                         <div class="reservation-actions">
                             <?php if($res['status'] == 'pending' || $res['status'] == 'confirmed'): ?>
                                 <a href="edit_reservation.php?id=<?= $res['reservation_id'] ?>" class="btn btn-edit">Edytuj</a>
                                 <a href="?cancel=<?= $res['reservation_id'] ?>" class="btn btn-delete" 
                                    onclick="return confirm('Czy na pewno chcesz anulować tę rezerwację?')">Anuluj</a>
                             <?php endif; ?>
-
                             <a href="reservation_details.php?id=<?= $res['reservation_id'] ?>" class="btn btn-primary">Szczegóły</a>
-
                         </div>
                     </div>
                 <?php endwhile; ?>

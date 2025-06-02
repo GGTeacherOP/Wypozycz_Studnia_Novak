@@ -55,14 +55,11 @@ require_once __DIR__ . '/includes/admin_header.php';
                         </a>
                     </li>
                     <li class="nav-item">
-
                         <a class="nav-link" href="manage_payments.php">
                             <i class="fas fa-calendar-check"></i> Platnosci
                         </a>
                     </li>
                     <li class="nav-item">
-
-
                         <a class="nav-link" href="logout.php">
                             <i class="fas fa-sign-out-alt"></i> Wyloguj
                         </a>

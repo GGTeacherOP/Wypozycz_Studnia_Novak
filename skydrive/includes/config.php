@@ -15,7 +15,6 @@ if ($conn->connect_error) {
 // Ustaw kodowanie
 $conn->set_charset("utf8mb4");
 
-
 function amountToWords($number) {
     $words = [
         0 => 'zero',
@@ -104,7 +103,7 @@ function amountToWords($number) {
     
     return ucfirst($result);
 }
-?>
+$db = new PDO('mysql:host=localhost;dbname=skydriverentals', 'root', '');
 
 ?>
 

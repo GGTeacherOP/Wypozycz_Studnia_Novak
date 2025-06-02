@@ -2,7 +2,6 @@
 session_start();
 include 'includes/config.php';
 include 'includes/header.php';
-
 ?>
 <link rel="stylesheet" href="style.css">
 
@@ -137,13 +136,6 @@ button.btn, a.btn {
 }
 </style>
 
-
-// Pobierz dostępne samochody
-$query = "SELECT * FROM available_cars";
-$result = $conn->query($query);
-?>
-
-
 <div class="vehicles-container">
     <h1>Dostępne samochody</h1>
     
@@ -243,9 +235,4 @@ $result = $conn->query($query);
         ?>
     </div>
 </div>
-
 <?php include 'includes/footer.php'; ?>
-
-
-<?php include 'includes/footer.php'; ?>
-
