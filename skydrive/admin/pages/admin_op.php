@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../../includes/config.php';
 session_start();
 
-require_once __DIR__ . '/../admin/admin_functions.php';
+require_once __DIR__ . '/../../admin/admin_functions.php';
 checkAdminAuth();
 
 // Obsługa akcji admina
@@ -16,7 +16,7 @@ if (isset($_GET['action'])) {
             $db->query("DELETE FROM reviews WHERE id = $review_id");
             break;
     }
-    header("Location: index.php");
+    header("Location: ../pages/admin_op.php");
 }
 
 // Pobierz opinie do moderacji
@@ -33,7 +33,7 @@ $reviews = $db->query("
 <head>
     <meta charset="UTF-8">
     <title>Panel Admina - Opinie</title>
-    <link rel="stylesheet" href="../admin/admin_op.css">
+    <link rel="stylesheet" href="../../admin/includes/admin_op.css">
 </head>
 <body>
     <div class="admin-container">

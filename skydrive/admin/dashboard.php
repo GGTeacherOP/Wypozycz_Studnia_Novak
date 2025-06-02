@@ -40,6 +40,11 @@ require_once __DIR__ . '/includes/admin_header.php';
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/pages/admin_op.php">
+                            <i class="fas fa-users"></i> Opinie
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="pages/manage_vehicles.php">
                             <i class="fas fa-car"></i> Pojazdy
                         </a>
