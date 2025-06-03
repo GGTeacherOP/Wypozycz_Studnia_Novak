@@ -443,6 +443,7 @@ textarea.form-control {
 }
 </style>
 
+
 <script>
 document.getElementById('vehicleType').addEventListener('change', function() {
     const type = this.value;

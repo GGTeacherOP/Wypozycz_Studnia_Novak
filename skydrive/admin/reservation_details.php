@@ -504,4 +504,5 @@ pre {
 .card:nth-child(3) { animation-delay: 0.3s; }
 .card:nth-child(4) { animation-delay: 0.4s; }
 </style>
+
 <?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>

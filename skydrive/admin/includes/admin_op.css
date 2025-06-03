@@ -1,4 +1,5 @@
 
+
 /* Główny kontener */
 body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -254,3 +255,50 @@ h1::before {
 .reviews-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
 .reviews-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
 button { white-space: nowrap; } /* Zapobiega zawijaniu tekstu */
+=======
+.admin-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reviews-table th, .reviews-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.reviews-table th {
+    background-color: #f2f2f2;
+}
+
+.reviews-table tr.pending {
+    background-color: #fff3cd;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-approve {
+    background: #28a745;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
