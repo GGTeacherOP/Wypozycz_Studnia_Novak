@@ -181,6 +181,268 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
         <a href="manage_vehicles.php" class="btn btn-secondary">Anuluj</a>
     </form>
 </div>
+<style>
+/* Główny kontener */
+.container-fluid {
+    padding: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Nagłówek */
+.container-fluid h2 {
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.container-fluid h2::before {
+    content: "🚗";
+    font-size: 1.5rem;
+}
+
+/* Alert błędów */
+.alert-danger {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border-left: 4px solid #ef4444;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.alert-danger p {
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.alert-danger p::before {
+    content: "•";
+    position: absolute;
+    left: 0.5rem;
+    font-weight: bold;
+}
+
+.alert-danger p:last-child {
+    margin-bottom: 0;
+}
+
+/* Formularz */
+form {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Wiersze formularza */
+.row {
+    margin-bottom: 1.5rem;
+}
+
+/* Pola formularza */
+.mb-3 {
+    margin-bottom: 1.5rem !important;
+    position: relative;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.75rem;
+    display: block;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-control, .form-select {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 0.95rem;
+    background-color: #f8fafc;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    background-color: white;
+    outline: none;
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+    transition: height 0.3s ease;
+}
+
+/* Checkbox */
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+}
+
+.form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: #8b5cf6;
+    border-color: #8b5cf6;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.form-check-label {
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* Przyciski */
+.btn {
+    border-radius: 8px;
+    padding: 0.75rem 1.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    color: white;
+    margin-left: 1rem;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #475569 0%, #334155 100%);
+}
+
+/* Grupa przycisków */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Pola specyficzne dla typu pojazdu */
+.plane-field {
+    display: none;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.car-field {
+    display: block;
+    opacity: 1;
+    height: auto;
+    transition: all 0.4s ease;
+}
+
+/* Animacje */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.mb-3 {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    form {
+        padding: 1.5rem;
+    }
+    
+    .row {
+        flex-direction: column;
+    }
+    
+    .col-md-6 {
+        width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+        justify-content: center;
+    }
+    
+    .btn-secondary {
+        margin-left: 0;
+    }
+}
+
+/* Efekty hover dla pól */
+.form-group:hover .form-label {
+    color: #7c3aed;
+}
+
+/* Podpowiedzi dla pól */
+.form-text {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+    display: block;
+}
+</style>
+
 
 <script>
 document.getElementById('vehicleType').addEventListener('change', function() {
