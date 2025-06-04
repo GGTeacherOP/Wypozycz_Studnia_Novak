@@ -192,6 +192,6 @@ $locations = $conn->query("SELECT * FROM locations");
         </main>
     </div>
     
-    <?php include '../includes/admin_footer.php'; ?>
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>

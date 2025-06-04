@@ -5,7 +5,7 @@ checkAdminAuth();
 require_once __DIR__ . '/../includes/config.php';
 
 if (!isset($_GET['id'])) {
-    header("Location: manage_vehicles.php");
+    header("Location: pages/manage_vehicles.php");
     exit();
 }
 
@@ -20,7 +20,7 @@ $vehicle = $stmt->get_result()->fetch_assoc();
 
 if (!$vehicle) {
     $_SESSION['error'] = "Pojazd nie został znaleziony";
-    header("Location: manage_vehicles.php");
+    header("Location: pages/manage_vehicles.php");
     exit();
 }
 
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($stmt->execute()) {
             $_SESSION['success'] = "Pojazd został pomyślnie zaktualizowany";
-            header("Location: manage_vehicles.php");
+            header("Location: pages/manage_vehicles.php");
             exit();
         } else {
             $errors[] = "Błąd podczas aktualizacji pojazdu: " . $conn->error;
