@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../admin/admin_functions.php';
+require_once __DIR__ . '/../../admin/admin_functions.php';
 checkAdminAuth();
 
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../../includes/config.php';
 
 $payment_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -41,7 +41,7 @@ $stmt->bind_param("i", $payment['reservation_id']);
 $stmt->execute();
 $equipment = $stmt->get_result();
 
-require_once __DIR__ . '/../admin/includes/admin_header.php';
+require_once __DIR__ . '/../../admin/includes/admin_header.php';
 ?>
 
 <div class="container-fluid">
@@ -183,10 +183,10 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
     </div>
     
     <div class="mt-3">
-        <a href="manage_payments.php" class="btn btn-secondary">Powrót</a>
-        <a href="edit_payment.php?id=<?= $payment_id ?>" class="btn btn-primary">Edytuj</a>
+        <a href="manage_payments.php">Powrót</a>
+        <a href="edit_payment.php?id=<?= $payment_id ?>">Edytuj</a>
         <button class="btn btn-success" onclick="window.print()">Drukuj</button>
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>
+<?php require_once __DIR__ . '/../../admin/includes/admin_footer.php'; ?>

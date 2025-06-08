@@ -178,7 +178,7 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
         </div>
         
         <button type="submit" class="btn btn-primary">Dodaj pojazd</button>
-        <a href="manage_vehicles.php" class="btn btn-secondary">Anuluj</a>
+        <a href="pages/manage_vehicles.php" class="btn btn-secondary">Anuluj</a>
     </form>
 </div>
 
