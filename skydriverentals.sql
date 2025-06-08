@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 27, 2025 at 01:03 AM
+-- Generation Time: Cze 08, 2025 at 10:46 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -92,7 +92,7 @@ INSERT INTO `equipment` (`equipment_id`, `name`, `description`, `daily_cost`) VA
 (3, 'Wifi w samochodzie', 'Internet mobilny w pojeździe', 50.00),
 (4, 'Dodatkowe ubezpieczenie', 'Pełne ubezpieczenie bez udziału własnego', 105.00),
 (5, 'Instruktor lotniczy', 'Dodatkowy pilot-instruktor', 300.00),
-(6, 'Mapa samochodowa', 'Mapa samochodowa na teren całego kraju', 0.00);
+(6, 'Mapa samochodowa', 'Mapa samochodowa na teren całego kraju', 0.01);
 
 -- --------------------------------------------------------
 
@@ -143,7 +143,11 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`payment_id`, `reservation_id`, `amount`, `payment_date`, `payment_method`, `status`, `transaction_id`, `payment_details`, `invoice_number`) VALUES
-(1, 6, 120000.00, '2025-05-27 00:50:06', 'credit_card', 'pending', NULL, '', '');
+(1, 6, 120000.00, '2025-05-27 00:50:06', 'credit_card', 'pending', NULL, '', ''),
+(2, 11, 530.00, '2025-06-04 23:48:21', 'credit_card', 'completed', NULL, '', ''),
+(3, 16, 48720.00, '2025-06-08 21:45:34', 'credit_card', 'pending', NULL, '', ''),
+(4, 15, 151680.00, '2025-06-08 21:56:46', 'credit_card', 'pending', NULL, '', ''),
+(5, 13, 389760.00, '2025-06-08 22:08:01', 'credit_card', 'pending', NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -175,7 +179,11 @@ INSERT INTO `reservationequipment` (`reservation_id`, `equipment_id`, `quantity`
 (12, 1, 1),
 (12, 2, 1),
 (12, 6, 1),
-(13, 1, 1);
+(13, 1, 2),
+(13, 2, 1),
+(13, 3, 1),
+(16, 1, 1),
+(16, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -209,11 +217,14 @@ INSERT INTO `reservations` (`reservation_id`, `user_id`, `vehicle_id`, `pickup_l
 (6, 3, 5, 1, 2, '2025-06-19 12:00:00', '2025-06-20 12:00:00', 120000.00, 'cancelled', NULL, 0, NULL, '2025-05-19 23:45:30', ''),
 (7, 4, 6, 1, 1, '2025-05-21 12:00:00', '2025-05-21 12:00:00', 0.00, 'cancelled', NULL, 0, NULL, '2025-05-20 01:46:52', NULL),
 (8, 4, 3, 3, 2, '2025-05-27 12:00:00', '2025-05-27 18:00:00', 0.00, 'confirmed', NULL, 0, NULL, '2025-05-25 00:52:12', NULL),
-(9, 4, 3, 1, 1, '2025-05-28 12:00:00', '2025-05-30 12:00:00', 1360.00, 'pending', NULL, 0, NULL, '2025-05-26 13:56:04', ''),
+(9, 4, 3, 1, 1, '2025-05-28 12:00:00', '2025-05-30 12:00:00', 1360.00, 'confirmed', NULL, 0, NULL, '2025-05-26 13:56:04', ''),
 (10, 4, 4, 1, 1, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 49200.00, 'confirmed', NULL, 0, NULL, '2025-05-26 14:22:53', NULL),
-(11, 4, 2, 3, 4, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 530.00, 'pending', NULL, 0, NULL, '2025-05-26 22:55:46', NULL),
-(12, 4, 6, 1, 4, '2025-06-03 12:00:00', '2025-06-05 12:00:00', 386400.00, 'confirmed', NULL, 0, NULL, '2025-05-26 23:38:07', NULL),
-(13, 4, 4, 1, 1, '2025-07-10 12:00:00', '2025-07-18 12:00:00', 389760.00, 'pending', NULL, 0, NULL, '2025-05-27 00:57:20', NULL);
+(11, 4, 2, 3, 4, '2025-05-27 12:00:00', '2025-05-28 12:00:00', 530.00, 'confirmed', NULL, 0, NULL, '2025-05-26 22:55:46', 'fff'),
+(12, 4, 6, 1, 4, '2025-06-03 12:00:00', '2025-06-05 12:00:00', 386400.00, 'confirmed', NULL, 0, NULL, '2025-05-26 23:38:07', ''),
+(13, 4, 4, 1, 1, '2025-07-10 12:00:00', '2025-07-18 12:00:00', 408960.00, 'confirmed', NULL, 0, NULL, '2025-05-27 00:57:20', NULL),
+(14, 4, 5, 2, 1, '2025-06-11 12:00:00', '2025-06-12 12:00:00', 120000.00, 'confirmed', NULL, 0, NULL, '2025-06-04 23:36:52', NULL),
+(15, 4, 7, 1, 1, '2025-06-19 12:00:00', '2025-06-27 12:00:00', 151680.00, 'confirmed', NULL, 0, NULL, '2025-06-04 23:58:51', ''),
+(16, 4, 4, 2, 1, '2025-06-09 12:00:00', '2025-06-10 12:00:00', 48720.00, 'confirmed', NULL, 0, NULL, '2025-06-08 21:44:21', '');
 
 -- --------------------------------------------------------
 
@@ -305,8 +316,8 @@ CREATE TABLE `vehicles` (
 
 INSERT INTO `vehicles` (`vehicle_id`, `type`, `make`, `model`, `year`, `registration_number`, `capacity`, `fuel_type`, `engine_power`, `max_speed`, `range`, `daily_rate`, `hourly_rate`, `available`, `location_id`, `image_path`, `description`) VALUES
 (1, 'car', 'Audi', 'A6', 2022, 'WA12345', 5, 'Benzyna', '250 KM', NULL, NULL, 400.00, NULL, 1, 1, 'https://img.chceauto.pl/audi/a6/audi-a6-kombi-4472-49497_head.webp', 'Luksusowy sedan z pełnym wyposażeniem'),
-(2, 'car', 'BMW', 'X5', 2021, 'WA67890', 5, 'Diesel', '300 KM', NULL, NULL, 500.00, NULL, 1, 1, 'https://bmw-uzywane.com.pl/assets/photo/upload/cars/30706/vehicle_70f26-scale-1200-0.jpg', 'SUV premium z napędem 4x4'),
-(3, 'car', 'Mercedes-Benz', 'S-Class', 2023, 'KR54321', 4, 'Hybryda', '367 KM', NULL, NULL, 600.00, NULL, 1, 2, 'https://www.motortrend.com/uploads/2023/01/2023-Mercedes-Benz-S580-4Matic-13.jpg?w=768&width=768&q=75&format=webp', 'Flagowy model Mercedesa z najnowszymi technologiami'),
+(2, 'car', 'BMW', 'X5', 2021, 'WA67890', 5, 'Diesel', '300 KM', '', '', 500.00, 0.00, 1, 1, 'https://bmw-uzywane.com.pl/assets/photo/upload/cars/30706/vehicle_70f26-scale-1200-0.jpg', 'SUV premium z napędem 4x4'),
+(3, 'car', 'Mercedes-Benz', 'S-Class', 2023, 'KR54321', 4, 'Hybryda', '367 KM', '', '', 600.00, 0.00, 1, 3, 'https://www.motortrend.com/uploads/2023/01/2023-Mercedes-Benz-S580-4Matic-13.jpg?w=768&width=768&q=75&format=webp', 'Flagowy model Mercedesa z najnowszymi technologiami'),
 (4, 'plane', 'Cessna', '172', 2018, 'SP-ABC', 4, 'Avgas', '160 KM', '230 km/h', '1200 km', 0.00, 2000.00, 1, 3, 'https://www.flyouts.com/images/thumbnails/product_image-3285-1306x735.jpg', 'Klasyczny samolot szkolno-turystyczny'),
 (5, 'plane', 'Pilatus', 'PC-12', 2020, 'SP-DEF', 9, 'Jet A-1', '1200 KM', '500 km/h', '3300 km', 0.00, 5000.00, 1, 5, 'https://aviationconsumer.com/wp-content/uploads/2019/09/p1a37g676bfgh1imo3skpe1dpn6.jpg', 'Jednosilnikowy samolot turbośmigłowy biznesowy'),
 (6, 'plane', 'Beechcraft', 'King Air 350', 2019, 'SP-GHI', 11, 'Jet A-1', '2x1050 KM', '560 km/h', '3000 km', 0.00, 8000.00, 1, 5, 'https://images.aircharterservice.com/global/aircraft-guide/private-charter/beechcraft-king-air-300-350-1.jpg', 'Dwusilnikowy samolot biznesowy'),
@@ -422,13 +433,13 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `reviews`
