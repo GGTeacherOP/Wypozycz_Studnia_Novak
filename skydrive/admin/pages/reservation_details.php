@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../admin/admin_functions.php';
+require_once __DIR__ . '/../../admin/admin_functions.php';
 checkAdminAuth();
 
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../../includes/config.php';
 
 $reservation_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -59,7 +59,7 @@ if(isset($_POST['change_status'])) {
     }
 }
 
-require_once __DIR__ . '/../admin/includes/admin_header.php';
+require_once __DIR__ . '/../../admin/includes/admin_header.php';
 ?>
 
 <div class="container-fluid">
@@ -251,257 +251,290 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
     </div>
 </div>
 <style>
-/* Główny kontener */
-.container-fluid {
-    padding: 2.5rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #f8fafc;
-}
-
-/* Nagłówek */
-.container-fluid h2 {
-    color: #1e293b;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #e2e8f0;
-    font-size: 1.8rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.container-fluid h2::before {
-    content: "📋";
-    font-size: 1.5rem;
-}
-
-/* Karty */
-.card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    margin-bottom: 1.5rem;
-    transition: transform 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-3px);
-}
-
-.card-header {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-    border-radius: 12px 12px 0 0 !important;
-    padding: 1.25rem 1.5rem;
-    border: none;
-}
-
-.card-header h3 {
-    margin: 0;
-    font-weight: 600;
-    font-size: 1.25rem;
-}
-
-.card-body {
-    padding: 1.5rem;
-}
-
-/* Obraz pojazdu */
-.img-fluid {
-    border-radius: 8px;
-    object-fit: cover;
-    width: 100%;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    border: 1px solid #f1f5f9;
-}
-
-/* Lista opisowa */
-dl.row {
-    margin: 0;
-}
-
-dt.col-sm-4 {
-    font-weight: 600;
-    color: #475569;
-    padding: 0.5rem 0;
-}
-
-dd.col-sm-8 {
-    color: #334155;
-    padding: 0.5rem 0;
-    margin-bottom: 0;
-}
-
-/* Statusy */
-.badge {
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.bg-success {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-.bg-warning {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white !important;
-}
-
-.bg-danger {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-}
-
-/* Tabela wyposażenia */
-.table {
-    margin-bottom: 0;
-    background: white;
-}
-
-.table thead th {
-    background-color: #f1f5f9;
-    color: #334155;
-    font-weight: 600;
-    padding: 1rem;
-    border-bottom: 2px solid #e2e8f0;
-}
-
-.table tbody td {
-    padding: 1rem;
-    border-top: 1px solid #f1f5f9;
-    vertical-align: middle;
-}
-
-/* Formularz zarządzania */
-.form-label {
-    font-weight: 600;
-    color: #475569;
-    margin-bottom: 0.5rem;
-}
-
-.form-select, .form-control {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    transition: all 0.3s ease;
-    background-color: #f8fafc;
-}
-
-.form-select:focus, .form-control:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-    background-color: white;
-}
-
-textarea.form-control {
-    min-height: 120px;
-    resize: vertical;
-}
-
-/* Przyciski */
-.btn {
-    border-radius: 8px;
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.btn-secondary {
-    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-    color: white;
-    margin-left: 0.75rem;
-}
-
-.btn-secondary:hover {
-    background: linear-gradient(135deg, #475569 0%, #334155 100%);
-}
-
-.btn-warning {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-}
-
-.btn-warning:hover {
-    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-}
-
-/* Alert */
-.alert-danger {
-    background-color: #fef2f2;
-    color: #b91c1c;
-    border-left: 4px solid #ef4444;
-    padding: 1.25rem 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-}
-
-/* Preformatowany tekst */
-pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    background-color: #f8fafc;
-    padding: 0.75rem;
-    border-radius: 6px;
-    border: 1px solid #e2e8f0;
-    font-family: inherit;
-    margin-bottom: 0;
-}
-
-/* Responsywność */
-@media (max-width: 992px) {
-    .row {
-        flex-direction: column;
+    :root {
+        --primary-color: #1976d2;
+        --primary-light: #e3f2fd;
+        --success-color: #388e3c;
+        --warning-color: #f57c00;
+        --danger-color: #d32f2f;
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --medium-gray: #e0e0e0;
+        --dark-gray: #757575;
+        --border-radius: 8px;
     }
-    
-    .col-md-6 {
-        width: 100%;
+
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--text-color);
+        background-color: #fafafa;
+        line-height: 1.6;
     }
-    
-    .btn {
-        width: 100%;
+
+    .container-fluid {
+        max-width: 1400px;
+        padding: 2rem;
+    }
+
+    h2 {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 2rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--medium-gray);
+        position: relative;
+    }
+
+    h2:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100px;
+        height: 2px;
+        background: var(--primary-color);
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--text-color);
+        margin: 0;
+    }
+
+    /* Karty */
+    .card {
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-bottom: none;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    /* Alerty */
+    .alert {
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--border-radius);
+        margin-bottom: 1.5rem;
+    }
+
+    .alert-danger {
+        background-color: #ffebee;
+        color: var(--danger-color);
+        border-left: 4px solid var(--danger-color);
+    }
+
+    /* Listy opisowe */
+    dl.row dt {
+        font-weight: 500;
+        color: var(--dark-gray);
+        padding-top: 0.25rem;
+    }
+
+    dl.row dd {
         margin-bottom: 0.75rem;
+        padding-top: 0.25rem;
     }
-    
+
+    /* Statusy */
+    .badge {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .bg-success { background-color: var(--success-color) !important; }
+    .bg-warning { background-color: var(--warning-color) !important; }
+    .bg-danger { background-color: var(--danger-color) !important; }
+
+    /* Tabele */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+    }
+
+    .table th {
+        background-color: var(--light-gray);
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-weight: 500;
+        border-bottom: 2px solid var(--medium-gray);
+    }
+
+    .table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--medium-gray);
+        vertical-align: middle;
+    }
+
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tr:hover {
+        background-color: rgba(25, 118, 210, 0.03);
+    }
+
+    /* Formularze */
+    .form-label {
+        font-weight: 500;
+        color: var(--dark-gray);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid var(--medium-gray);
+        border-radius: var(--border-radius);
+        padding: 0.5rem 0.75rem;
+        width: 100%;
+        transition: border 0.3s;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    }
+
+    textarea.form-control {
+        min-height: 100px;
+    }
+
+    /* Przyciski */
+    .btn {
+        padding: 0.5rem 1.25rem;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        border: 1px solid transparent;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #1565c0;
+        transform: translateY(-1px);
+    }
+
     .btn-secondary {
-        margin-left: 0;
+        background-color: var(--dark-gray);
+        color: white;
     }
-}
 
-/* Animacje */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    .btn-secondary:hover {
+        background-color: #616161;
+    }
 
-.card {
-    animation: fadeIn 0.4s ease forwards;
-}
+    .btn-warning {
+        background-color: var(--warning-color);
+        color: white;
+    }
 
-/* Sekwencja animacji */
-.card:nth-child(1) { animation-delay: 0.1s; }
-.card:nth-child(2) { animation-delay: 0.2s; }
-.card:nth-child(3) { animation-delay: 0.3s; }
-.card:nth-child(4) { animation-delay: 0.4s; }
+    .btn-warning:hover {
+        background-color: #e65100;
+    }
+
+    /* Obrazy */
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Preformowany tekst */
+    pre {
+        white-space: pre-wrap;
+        background-color: var(--light-gray);
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        border-left: 4px solid var(--primary-color);
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    /* Responsywność */
+    @media (max-width: 992px) {
+        .container-fluid {
+            padding: 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1.25rem;
+        }
+        
+        dl.row dt, 
+        dl.row dd {
+            width: 100%;
+            display: block;
+        }
+        
+        dl.row dt {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed var(--medium-gray);
+        }
+    }
+
+    /* Druk */
+    @media print {
+        body {
+            padding: 0 !important;
+            font-size: 12pt;
+            background: white !important;
+        }
+        
+        .container-fluid {
+            padding: 0 !important;
+            max-width: 100% !important;
+        }
+        
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+            page-break-inside: avoid;
+        }
+        
+        .btn, .form-control, .form-select, .form-label {
+            display: none !important;
+        }
+        
+        h2:after {
+            display: none;
+        }
+    }
 </style>
-<?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>
+

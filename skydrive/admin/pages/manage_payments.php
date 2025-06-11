@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../admin/admin_functions.php';
+require_once __DIR__ . '/../../admin/admin_functions.php';
 checkAdminAuth();
 
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../../includes/config.php';
 
 // Filtry
 $status = isset($_GET['status']) ? $_GET['status'] : '';
@@ -46,7 +46,7 @@ $stats_query = "SELECT
                 FROM payments";
 $stats = $conn->query($stats_query)->fetch_assoc();
 
-require_once __DIR__ . '/../admin/includes/admin_header.php';
+require_once __DIR__ . '/../../admin/includes/admin_header.php';
 ?>
 
 <div class="container-fluid">
@@ -196,6 +196,23 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
     </div>
 </div>
 
+<style>
+    .stat-card {
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .stat-card h5 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    .stat-card p {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+</style>
 <style>
 /* Główny kontener */
 .container-fluid {
@@ -489,4 +506,4 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
 }
 </style>
 
-<?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>
+<?php require_once __DIR__ . '/../../admin/includes/admin_footer.php'; ?>

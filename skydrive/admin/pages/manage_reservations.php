@@ -1,124 +1,62 @@
 <?php
-require_once __DIR__ . '/../admin_functions.php';
+require_once __DIR__ . '/../../admin/admin_functions.php';
 checkAdminAuth();
 
 require_once __DIR__ . '/../../includes/config.php';
 
-// Akcje na rezerwacjach
-if (isset($_GET['action']) && isset($_GET['id'])) {
-    $reservation_id = intval($_GET['id']);
-    $action = $_GET['action'];
-    
-    $valid_statuses = ['pending', 'confirmed', 'cancelled'];
-    if (in_array($action, $valid_statuses)) {
-        $stmt = $conn->prepare("UPDATE reservations SET status = ? WHERE reservation_id = ?");
-        $stmt->bind_param("si", $action, $reservation_id);
-        $stmt->execute();
-        $_SESSION['success'] = "Status rezerwacji został zaktualizowany";
-    }
-    header("Location: manage_reservations.php");
-    exit();
+// Komunikaty
+if(isset($_SESSION['error'])) {
+    $error_message = $_SESSION['error'];
+    unset($_SESSION['error']);
 }
 
-// Pobierz listę rezerwacji
-$reservations = $conn->query("
-    SELECT r.*, 
-           v.make, v.model, v.type,
-           u.first_name, u.last_name, u.email,
-           pl.city as pickup_city, rl.city as return_city
-    FROM reservations r
-    JOIN vehicles v ON r.vehicle_id = v.vehicle_id
-    JOIN users u ON r.user_id = u.user_id
-    JOIN locations pl ON r.pickup_location_id = pl.location_id
-    JOIN locations rl ON r.return_location_id = rl.location_id
-    ORDER BY r.pickup_date DESC
-");
+if(isset($_SESSION['success'])) {
+    $success_message = $_SESSION['success'];
+    unset($_SESSION['success']);
+}
 
-require_once __DIR__ . '/../includes/admin_header.php';
+// Filtry
+$status = isset($_GET['status']) ? $conn->real_escape_string($_GET['status']) : '';
+$type = isset($_GET['type']) ? $conn->real_escape_string($_GET['type']) : '';
+
+// Zapytanie SQL z prepared statements
+$query = "SELECT r.*, v.make, v.model, v.type, 
+          CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+          pl.city as pickup_city, rl.city as return_city
+          FROM reservations r
+          JOIN vehicles v ON r.vehicle_id = v.vehicle_id
+          JOIN users u ON r.user_id = u.user_id
+          JOIN locations pl ON r.pickup_location_id = pl.location_id
+          JOIN locations rl ON r.return_location_id = rl.location_id
+          WHERE 1=1";
+
+$params = [];
+$types = '';
+
+if ($status) {
+    $query .= " AND r.status = ?";
+    $params[] = $status;
+    $types .= 's';
+}
+
+if ($type) {
+    $query .= " AND v.type = ?";
+    $params[] = $type;
+    $types .= 's';
+}
+
+$query .= " ORDER BY r.pickup_date DESC";
+
+$stmt = $conn->prepare($query);
+if ($types) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$reservations = $stmt->get_result();
+
+require_once __DIR__ . '/../../admin/includes/admin_header.php';
 ?>
 
-<div class="container-fluid">
-    <h2>Zarządzanie rezerwacjami</h2>
-    
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
-    <?php endif; ?>
-    
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Pojazd</th>
-                    <th>Klient</th>
-                    <th>Termin</th>
-                    <th>Lokalizacje</th>
-                    <th>Koszt</th>
-                    <th>Status</th>
-                    <th>Akcje</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($res = $reservations->fetch_assoc()): ?>
-                <tr>
-                    <td><?= $res['reservation_id'] ?></td>
-                    <td>
-                        <?= htmlspecialchars($res['make'] . ' ' . $res['model']) ?>
-                        <small class="text-muted d-block"><?= $res['type'] == 'car' ? 'Samochód' : 'Samolot' ?></small>
-                    </td>
-                    <td>
-                        <?= htmlspecialchars($res['first_name'] . ' ' . $res['last_name']) ?>
-                        <small class="text-muted d-block"><?= htmlspecialchars($res['email']) ?></small>
-                    </td>
-                    <td>
-                        <?= date('d.m.Y H:i', strtotime($res['pickup_date'])) ?><br>
-                        do<br>
-                        <?= date('d.m.Y H:i', strtotime($res['return_date'])) ?>
-                    </td>
-                    <td>
-                        <strong>Odbiór:</strong> <?= htmlspecialchars($res['pickup_city']) ?><br>
-                        <strong>Zwrot:</strong> <?= htmlspecialchars($res['return_city']) ?>
-                    </td>
-                    <td><?= number_format($res['total_cost'], 2) ?> PLN</td>
-                    <td>
-                        <span class="badge bg-<?= 
-                            $res['status'] == 'confirmed' ? 'success' : 
-                            ($res['status'] == 'pending' ? 'warning' : 'danger') 
-                        ?>">
-                            <?= 
-                                $res['status'] == 'confirmed' ? 'Potwierdzona' : 
-                                ($res['status'] == 'pending' ? 'Oczekująca' : 'Anulowana') 
-                            ?>
-                        </span>
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            <?php if ($res['status'] == 'pending'): ?>
-                                <a href="?action=confirmed&id=<?= $res['reservation_id'] ?>" 
-                                   class="btn btn-sm btn-success" title="Zatwierdź">
-                                    <i class="fas fa-check"></i>
-                                </a>
-                            <?php endif; ?>
-                            
-                            <?php if ($res['status'] != 'cancelled'): ?>
-                                <a href="?action=cancelled&id=<?= $res['reservation_id'] ?>" 
-                                   class="btn btn-sm btn-danger" title="Anuluj">
-                                    <i class="fas fa-times"></i>
-                                </a>
-                            <?php endif; ?>
-                            
-                            <a href="../reservation_details.php?id=<?= $res['reservation_id'] ?>" 
-                               class="btn btn-sm btn-primary" title="Szczegóły">
-                                <i class="fas fa-info-circle"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
 <style>
 /* Główny kontener */
 .container-fluid {
@@ -252,13 +190,13 @@ require_once __DIR__ . '/../includes/admin_header.php';
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
+    width: 65px;
     height: 36px;
 }
 
 .btn-sm {
     padding: 0.5rem;
-    width: 32px;
+    width: 80px;
     height: 32px;
 }
 
@@ -381,5 +319,108 @@ require_once __DIR__ . '/../includes/admin_header.php';
         margin-left: 0.5rem;
     }
 }
+</style>
 
-<?php require_once __DIR__ . '/../includes/admin_footer.php'; ?>
+<div class="container-fluid">
+    <h2>Zarządzanie rezerwacjami</h2>
+
+    <?php if(isset($error_message)): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
+    <?php endif; ?>
+
+    <?php if(isset($success_message)): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($success_message) ?></div>
+    <?php endif; ?>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="">Wszystkie</option>
+                        <option value="pending" <?= $status == 'pending' ? 'selected' : '' ?>>Oczekujące</option>
+                        <option value="confirmed" <?= $status == 'confirmed' ? 'selected' : '' ?>>Potwierdzone</option>
+                        <option value="cancelled" <?= $status == 'cancelled' ? 'selected' : '' ?>>Anulowane</option>
+                        <option value="completed" <?= $status == 'completed' ? 'selected' : '' ?>>Zakończone</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Typ pojazdu</label>
+                    <select name="type" class="form-select">
+                        <option value="">Wszystkie</option>
+                        <option value="car" <?= $type == 'car' ? 'selected' : '' ?>>Samochody</option>
+                        <option value="plane" <?= $type == 'plane' ? 'selected' : '' ?>>Samoloty</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Filtruj</button>
+                    <a href="manage_reservations.php" class="btn btn-secondary ms-2">Wyczyść</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Klient</th>
+                    <th>Pojazd</th>
+                    <th>Termin</th>
+                    <th>Lokalizacje</th>
+                    <th>Koszt</th>
+                    <th>Status</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($res = $reservations->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $res['reservation_id'] ?></td>
+                    <td><?= htmlspecialchars($res['customer_name']) ?></td>
+                    <td><?= htmlspecialchars($res['make'] . ' ' . $res['model']) ?></td>
+                    <td>
+                        <?= date('d.m.Y H:i', strtotime($res['pickup_date'])) ?><br>
+                        <?= date('d.m.Y H:i', strtotime($res['return_date'])) ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars($res['pickup_city']) ?><br>
+                        <?= htmlspecialchars($res['return_city']) ?>
+                    </td>
+                    <td><?= number_format($res['total_cost'], 2) ?> PLN</td>
+                    <td>
+                        <span class="badge bg-<?= 
+                            $res['status'] == 'confirmed' ? 'success' :
+                            ($res['status'] == 'pending' ? 'warning' : 
+                            ($res['status'] == 'completed' ? 'primary' : 'danger')) ?>">
+                            <?= $res['status'] == 'pending' ? 'Oczekująca' :
+                               ($res['status'] == 'confirmed' ? 'Potwierdzona' : 
+                               ($res['status'] == 'completed' ? 'Zakończona' : 'Anulowana')) ?>
+                        </span>
+                    </td>
+                    <td>
+                        <a href="reservation_details.php?id=<?= $res['reservation_id'] ?>" 
+                           class="btn btn-sm btn-primary" title="Szczegóły">
+                            <i class="fas fa-eye"></i> Podgląd
+                        </a>
+                        <a href="edit_reservation.php?reservation_id=<?= $res['reservation_id'] ?>" 
+                           class="btn btn-sm btn-warning" title="Edytuj">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </a>
+                        <?php if($res['status'] == 'pending'): ?>
+                            <a href="update_reservation_status.php?reservation_id=<?= $res['reservation_id'] ?>&status=confirmed" 
+                               class="btn btn-sm btn-success" title="Potwierdź">
+                                <i class="fas fa-check"></i> Potwierdź
+                            </a>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php require_once __DIR__ . '/../../admin/includes/admin_footer.php'; ?>

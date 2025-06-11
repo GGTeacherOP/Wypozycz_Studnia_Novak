@@ -178,270 +178,9 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
         </div>
         
         <button type="submit" class="btn btn-primary">Dodaj pojazd</button>
-        <a href="manage_vehicles.php" class="btn btn-secondary">Anuluj</a>
+        <a href="pages/manage_vehicles.php" class="btn btn-secondary">Anuluj</a>
     </form>
 </div>
-<style>
-/* Główny kontener */
-.container-fluid {
-    padding: 2.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    background: #f8fafc;
-    min-height: 100vh;
-}
-
-/* Nagłówek */
-.container-fluid h2 {
-    color: #1e293b;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #e2e8f0;
-    font-size: 1.8rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.container-fluid h2::before {
-    content: "🚗";
-    font-size: 1.5rem;
-}
-
-/* Alert błędów */
-.alert-danger {
-    background-color: #fef2f2;
-    color: #b91c1c;
-    border-left: 4px solid #ef4444;
-    padding: 1.25rem 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    animation: fadeIn 0.4s ease-out;
-}
-
-.alert-danger p {
-    margin-bottom: 0.5rem;
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.alert-danger p::before {
-    content: "•";
-    position: absolute;
-    left: 0.5rem;
-    font-weight: bold;
-}
-
-.alert-danger p:last-child {
-    margin-bottom: 0;
-}
-
-/* Formularz */
-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    animation: slideUp 0.5s ease-out;
-}
-
-/* Wiersze formularza */
-.row {
-    margin-bottom: 1.5rem;
-}
-
-/* Pola formularza */
-.mb-3 {
-    margin-bottom: 1.5rem !important;
-    position: relative;
-}
-
-.form-label {
-    font-weight: 600;
-    color: #475569;
-    margin-bottom: 0.75rem;
-    display: block;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-}
-
-.form-control, .form-select {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    transition: all 0.3s ease;
-    width: 100%;
-    font-size: 0.95rem;
-    background-color: #f8fafc;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #8b5cf6;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-    background-color: white;
-    outline: none;
-}
-
-textarea.form-control {
-    min-height: 120px;
-    resize: vertical;
-    transition: height 0.3s ease;
-}
-
-/* Checkbox */
-.form-check {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0;
-}
-
-.form-check-input {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-top: 0;
-    border: 1px solid #e2e8f0;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.form-check-input:checked {
-    background-color: #8b5cf6;
-    border-color: #8b5cf6;
-}
-
-.form-check-input:focus {
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-}
-
-.form-check-label {
-    font-weight: 500;
-    color: #475569;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-/* Przyciski */
-.btn {
-    border-radius: 8px;
-    padding: 0.75rem 1.75rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    font-size: 1rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-}
-
-.btn-secondary {
-    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-    color: white;
-    margin-left: 1rem;
-}
-
-.btn-secondary:hover {
-    background: linear-gradient(135deg, #475569 0%, #334155 100%);
-}
-
-/* Grupa przycisków */
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-/* Pola specyficzne dla typu pojazdu */
-.plane-field {
-    display: none;
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease;
-}
-
-.car-field {
-    display: block;
-    opacity: 1;
-    height: auto;
-    transition: all 0.4s ease;
-}
-
-/* Animacje */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.mb-3 {
-    animation: fadeIn 0.3s ease forwards;
-}
-
-/* Responsywność */
-@media (max-width: 768px) {
-    .container-fluid {
-        padding: 1.5rem;
-    }
-    
-    form {
-        padding: 1.5rem;
-    }
-    
-    .row {
-        flex-direction: column;
-    }
-    
-    .col-md-6 {
-        width: 100%;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .btn {
-        width: 100%;
-        margin-bottom: 1rem;
-        justify-content: center;
-    }
-    
-    .btn-secondary {
-        margin-left: 0;
-    }
-}
-
-/* Efekty hover dla pól */
-.form-group:hover .form-label {
-    color: #7c3aed;
-}
-
-/* Podpowiedzi dla pól */
-.form-text {
-    font-size: 0.8rem;
-    color: #64748b;
-    margin-top: 0.25rem;
-    display: block;
-}
-</style>
 
 <script>
 document.getElementById('vehicleType').addEventListener('change', function() {
@@ -456,4 +195,195 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>
+<style>
+    :root {
+        --primary-color: #1976d2;
+        --primary-light: #e3f2fd;
+        --success-color: #388e3c;
+        --warning-color: #f57c00;
+        --danger-color: #d32f2f;
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --medium-gray: #e0e0e0;
+        --dark-gray: #616161;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+    }
+
+    body {
+        font-family: 'Roboto', 'Segoe UI', sans-serif;
+        background-color: #f8f9fa;
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
+    .container-fluid {
+        max-width: 1200px;
+        padding: 2rem;
+    }
+
+    h2 {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        position: relative;
+    }
+
+    h2:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--primary-color);
+    }
+
+    /* Alerty */
+    .alert {
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        margin-bottom: 1.5rem;
+    }
+
+    .alert-danger {
+        background-color: #ffebee;
+        color: var(--danger-color);
+        border-left: 4px solid var(--danger-color);
+    }
+
+    .alert-danger p {
+        margin: 0.25rem 0;
+    }
+
+    /* Formularz */
+    form {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: var(--dark-gray);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid var(--medium-gray);
+        border-radius: var(--border-radius);
+        padding: 0.75rem;
+        width: 100%;
+        transition: var(--transition);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        margin-top: 0;
+    }
+
+    /* Przyciski */
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        transition: var(--transition);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-right: 1rem;
+        margin-top: 1rem;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #1565c0;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+    }
+
+    .btn-secondary {
+        background-color: white;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--primary-light);
+    }
+
+    /* Responsywność */
+    @media (max-width: 768px) {
+        .container-fluid {
+            padding: 1rem;
+        }
+        
+        form {
+            padding: 1.5rem;
+        }
+        
+        .btn {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+
+    /* Pola specyficzne dla typu pojazdu */
+    .car-field, .plane-field {
+        transition: var(--transition);
+    }
+
+    /* Animacja pojawiania się pól */
+    [style*="display: block"] {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Druk */
+    @media print {
+        .btn, .form-check {
+            display: none !important;
+        }
+        
+        form {
+            box-shadow: none;
+            padding: 0;
+        }
+    }
+</style>

@@ -40,11 +40,6 @@ require_once __DIR__ . '/includes/admin_header.php';
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/pages/admin_op.php">
-                            <i class="fas fa-users"></i> Opinie
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="pages/manage_vehicles.php">
                             <i class="fas fa-car"></i> Pojazdy
                         </a>
@@ -60,8 +55,13 @@ require_once __DIR__ . '/includes/admin_header.php';
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="manage_payments.php">
+                        <a class="nav-link" href="pages/manage_payments.php">
                             <i class="fas fa-calendar-check"></i> Platnosci
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/admin_op.php">
+                            <i class="fas fa-calendar-check"></i> Opinie
                         </a>
                     </li>
                     <li class="nav-item">

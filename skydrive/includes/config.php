@@ -104,6 +104,4 @@ function amountToWords($number) {
     return ucfirst($result);
 }
 $db = new PDO('mysql:host=localhost;dbname=skydriverentals', 'root', '');
-
 ?>
-

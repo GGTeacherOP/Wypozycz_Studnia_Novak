@@ -21,7 +21,6 @@
                     
                     <?php if(isset($_SESSION['user_id'])): ?>
                         <li><a href="my_reservations.php">Moje rezerwacje</a></li>
-                        
                         <li>
                             <a href="logout.php" class="btn-logout">
                                 <i class="fas fa-sign-out-alt"></i> Wyloguj

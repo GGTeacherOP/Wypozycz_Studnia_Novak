@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../admin/admin_functions.php';
+require_once __DIR__ . '/../../admin/admin_functions.php';
 checkAdminAuth();
 
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../../includes/config.php';
 
 $payment_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -41,7 +41,7 @@ $stmt->bind_param("i", $payment['reservation_id']);
 $stmt->execute();
 $equipment = $stmt->get_result();
 
-require_once __DIR__ . '/../admin/includes/admin_header.php';
+require_once __DIR__ . '/../../admin/includes/admin_header.php';
 ?>
 
 <div class="container-fluid">
@@ -183,10 +183,226 @@ require_once __DIR__ . '/../admin/includes/admin_header.php';
     </div>
     
     <div class="mt-3">
-        <a href="manage_payments.php" class="btn btn-secondary">Powrót</a>
-        <a href="edit_payment.php?id=<?= $payment_id ?>" class="btn btn-primary">Edytuj</a>
+        <a class="btn btn-success" href="manage_payments.php">Powrót</a>
+        <a class="btn btn-success" href="edit_payment.php?id=<?= $payment_id ?>">Edytuj</a>
         <button class="btn btn-success" onclick="window.print()">Drukuj</button>
     </div>
 </div>
+<style>
+    :root {
+        --primary-color: #1976d2;
+        --success-color: #388e3c;
+        --warning-color: #f57c00;
+        --danger-color: #d32f2f;
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --border-color: #e0e0e0;
+    }
 
-<?php require_once __DIR__ . '/../admin/includes/admin_footer.php'; ?>
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--text-color);
+        background-color: #f9f9f9;
+    }
+
+    .container-fluid {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h2 {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    /* Karty */
+    .card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-bottom: none;
+    }
+
+    .card-header h4 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    /* Listy opisowe */
+    dl.row dt {
+        font-weight: 500;
+        color: #555;
+    }
+
+    dl.row dd {
+        margin-bottom: 1rem;
+    }
+
+    /* Statusy (badge) */
+    .badge {
+        font-size: 0.8rem;
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .bg-success { background-color: var(--success-color) !important; }
+    .bg-warning { background-color: var(--warning-color) !important; }
+    .bg-danger { background-color: var(--danger-color) !important; }
+
+    /* Tabela wyposażenia */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th {
+        background-color: var(--light-gray);
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-weight: 500;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    /* Dodatkowe informacje */
+    pre {
+        white-space: pre-wrap;
+        background-color: var(--light-gray);
+        padding: 1rem;
+        border-radius: 6px;
+        border-left: 4px solid var(--primary-color);
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+    }
+
+    /* Przyciski i linki */
+    .action-buttons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-outline {
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        background: transparent;
+    }
+
+    .btn-outline:hover {
+        background-color: rgba(25, 118, 210, 0.08);
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #1565c0;
+        box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+    }
+
+    .btn-print {
+        background-color: #757575;
+        color: white;
+        border: none;
+    }
+
+    .btn-print:hover {
+        background-color: #616161;
+    }
+
+    /* Responsywność */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1rem;
+        }
+        
+        dl.row dt, 
+        dl.row dd {
+            width: 100%;
+            display: block;
+        }
+        
+        dl.row dt {
+            margin-top: 0.5rem;
+        }
+    }
+
+    /* Druk */
+    @media print {
+        body {
+            padding: 0;
+            font-size: 12pt;
+            background: white;
+        }
+        
+        .container-fluid {
+            padding: 0;
+        }
+        
+        .card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+            page-break-inside: avoid;
+        }
+        
+        .action-buttons {
+            display: none;
+        }
+    }
+</style>
+
